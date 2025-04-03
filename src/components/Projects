@@ -1,0 +1,86 @@
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Container, Row, Col, Tab, Nav } from 'react-bootstrap';
+import ProjectCard from './UI/ProjectCard';
+import { projects } from '../assets/data';
+
+const Projects = () => {
+  const [activeFilter, setActiveFilter] = useState('All');
+  const [filteredProjects, setFilteredProjects] = useState(projects);
+  const [activeProject, setActiveProject] = useState(null);
+
+  const handleFilterChange = (filter) => {
+    setActiveFilter(filter);
+    if (filter === 'All') {
+      setFilteredProjects(projects);
+    } else {
+      setFilteredProjects(projects.filter(project => project.category === filter));
+    }
+  };
+
+  const categories = ['All', ...new Set(projects.map(project => project.category))];
+
+  return (
+    <section id="projects" className="projects-section">
+      <Container>
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
+          viewport={{ once: true }}
+          className="section-header"
+        >
+          <h2>My Projects</h2>
+          <p>Some of my recent work</p>
+        </motion.div>
+
+        <Tab.Container defaultActiveKey="All">
+          <Nav variant="pills" className="projects-filter">
+            {categories.map((category) => (
+              <Nav.Item key={category}>
+                <Nav.Link
+                  eventKey={category}
+                  onClick={() => handleFilterChange(category)}
+                  className={activeFilter === category ? 'active' : ''}
+                >
+                  {category}
+                </Nav.Link>
+              </Nav.Item>
+            ))}
+          </Nav>
+
+          <Tab.Content>
+            <motion.div
+              layout
+              className="projects-grid"
+            >
+              <AnimatePresence>
+                {filteredProjects.map((project, index) => (
+                  <motion.div
+                    key={project.id}
+                    layout
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.9 }}
+                    transition={{ duration: 0.3, delay: index * 0.05 }}
+                    whileHover={{ y: -10 }}
+                  >
+                    <ProjectCard 
+                      project={project}
+                      isActive={activeProject === project.id}
+                      onClick={() => setActiveProject(
+                        activeProject === project.id ? null : project.id
+                      )}
+                    />
+                  </motion.div>
+                ))}
+              </AnimatePresence>
+            </motion.div>
+          </Tab.Content>
+        </Tab.Container>
+      </Container>
+    </section>
+  );
+};
+
+export default Projects;
