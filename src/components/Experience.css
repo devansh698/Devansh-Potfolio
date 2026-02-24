@@ -1,0 +1,114 @@
+.exp-sec { background: var(--bg2); }
+
+.exp-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.exp-card {
+  background: var(--card);
+  border: 1px solid var(--b);
+  border-radius: var(--r);
+  padding: 2rem;
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 2.5rem;
+  transition: border-color .3s, transform .35s, box-shadow .3s,
+              opacity .7s var(--ease);
+}
+
+.exp-card:hover {
+  border-color: var(--a);
+  transform: translateY(-4px);
+  box-shadow: 0 16px 40px rgba(0,229,255,.06);
+}
+
+.exp-left {
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+  padding-top: .2rem;
+}
+
+.exp-period {
+  font-family: var(--fm);
+  font-size: .72rem;
+  letter-spacing: .06em;
+}
+
+.per-a  { color: var(--a); }
+.per-a2 { color: var(--a2); }
+
+.exp-type {
+  font-size: .75rem;
+  color: var(--t3);
+}
+
+.exp-org-badge {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: var(--bg);
+  border: 1px solid var(--b);
+  display: grid;
+  place-items: center;
+  font-family: var(--ff);
+  font-weight: 800;
+  font-size: .9rem;
+  color: var(--a);
+  margin-top: .5rem;
+}
+
+.exp-role {
+  font-family: var(--ff);
+  font-size: 1.18rem;
+  font-weight: 700;
+  margin-bottom: .3rem;
+}
+
+.exp-org {
+  font-size: .85rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.org-a  { color: var(--a); }
+.org-a2 { color: var(--a2); }
+
+.exp-bullets {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+  margin-bottom: 1.25rem;
+}
+
+.exp-bullets li {
+  font-size: .9rem;
+  color: var(--t2);
+  padding-left: 1.1rem;
+  position: relative;
+  line-height: 1.7;
+}
+
+.exp-bullets li::before {
+  content: '▸';
+  position: absolute;
+  left: 0;
+  color: var(--a);
+  font-size: .7rem;
+  top: .15rem;
+}
+
+.exp-tech {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .4rem;
+}
+
+@media (max-width: 640px) {
+  .exp-card { grid-template-columns: 1fr; gap: 1rem; }
+  .exp-left { flex-direction: row; align-items: center; flex-wrap: wrap; }
+  .exp-org-badge { display: none; }
+}

@@ -1,0 +1,50 @@
+.footer {
+  padding: 2.5rem 0;
+  border-top: 1px solid var(--b);
+  background: var(--bg);
+}
+
+.footer-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.f-logo {
+  font-family: var(--ff);
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: var(--t);
+  display: block;
+  margin-bottom: .25rem;
+}
+
+.f-logo span { color: var(--a); }
+
+.f-copy {
+  font-size: .8rem;
+  color: var(--t3);
+}
+
+.f-copy strong { color: var(--t2); }
+
+.f-links {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.f-links a {
+  font-size: .82rem;
+  color: var(--t3);
+  transition: color .2s;
+}
+
+.f-links a:hover { color: var(--a); }
+
+@media (max-width: 640px) {
+  .footer-inner { justify-content: center; text-align: center; }
+  .f-links { justify-content: center; }
+}
