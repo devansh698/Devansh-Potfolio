@@ -1,0 +1,91 @@
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.bd-grid {
+  position: absolute;
+  inset: -20% 0 0 0;
+  height: 140%;
+  background-image:
+    linear-gradient(var(--b) 1px, transparent 1px),
+    linear-gradient(90deg, var(--b) 1px, transparent 1px);
+  background-size: 64px 64px;
+  opacity: .55;
+  will-change: transform;
+}
+
+.bd-blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(110px);
+  will-change: transform;
+}
+
+.bd-1 {
+  width: 620px;
+  height: 620px;
+  top: -10%;
+  right: -12%;
+  background: radial-gradient(circle, var(--flame) 0%, transparent 70%);
+  opacity: .10;
+  animation: drift1 22s ease-in-out infinite;
+}
+
+.bd-2 {
+  width: 520px;
+  height: 520px;
+  top: 55%;
+  left: -14%;
+  background: radial-gradient(circle, var(--moss) 0%, transparent 70%);
+  opacity: .08;
+  animation: drift2 26s ease-in-out infinite;
+}
+
+.bd-3 {
+  width: 420px;
+  height: 420px;
+  top: 110%;
+  right: 8%;
+  background: radial-gradient(circle, var(--flame) 0%, transparent 70%);
+  opacity: .07;
+  animation: drift3 19s ease-in-out infinite;
+}
+
+.bd-scanline {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 140px;
+  background: linear-gradient(to bottom, transparent, var(--flameg), transparent);
+  opacity: .4;
+  animation: scanline 9s linear infinite;
+}
+
+@keyframes drift1 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50%      { transform: translate(-60px, 50px) scale(1.12); }
+}
+
+@keyframes drift2 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50%      { transform: translate(50px, -40px) scale(1.08); }
+}
+
+@keyframes drift3 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50%      { transform: translate(-40px, -60px) scale(1.15); }
+}
+
+@keyframes scanline {
+  0%   { top: -10%; }
+  100% { top: 110%; }
+}
+
+@media (max-width: 768px) {
+  .bd-blob { filter: blur(70px); }
+  .bd-scanline { display: none; }
+}

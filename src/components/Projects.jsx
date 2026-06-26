@@ -1,26 +1,69 @@
 import { useState, useRef } from 'react';
-import { useScrollReveal } from '../hooks/useScrollReveal';
+import { motion, useScroll, useTransform } from 'framer-motion';
+import { useSpotlight } from '../hooks/useSpotlight';
 import { projects } from '../data';
 import './Projects.css';
 
 const CATS = ['All', 'MERN', 'Laravel', 'Web'];
 
+function StickyProjectCard({ p, i, total, progress }) {
+  const spot = useSpotlight();
+  const range = [i / total, Math.min((i + 1.4) / total, 1)];
+  const scale = useTransform(progress, range, [1, 0.92]);
+  const opacity = useTransform(progress, [range[0], range[1]], [1, i === total - 1 ? 1 : 0.45]);
+
+  return (
+    <div className="sticky-slot" style={{ top: `${6 + i * 2.6}rem` }}>
+      <motion.div
+        style={{ scale, opacity, '--card-rot': `${i % 2 ? 0.5 : -0.5}deg` }}
+        className="proj-card spotlight"
+        onMouseMove={spot}
+      >
+        <div className="proj-card-top">
+          <span className="proj-code">{p.code}</span>
+          <span className="proj-cat">{p.cat}</span>
+        </div>
+        <h3 className="proj-title">{p.title}</h3>
+        <span className="proj-sub">{p.sub}</span>
+        <span className="proj-period">{p.period}</span>
+        <p className="proj-desc">{p.desc}</p>
+        <div className="proj-tags">
+          {p.tech.map(t => <span key={t} className="tag">{t}</span>)}
+        </div>
+        <div className="proj-footer">
+          {p.gh !== '#' ? (
+            <a href={p.gh} target="_blank" rel="noopener noreferrer" className="proj-link">
+              <GithubIcon /> View Code
+            </a>
+          ) : (
+            <span className="proj-wip">In Development</span>
+          )}
+        </div>
+      </motion.div>
+    </div>
+  );
+}
+
 export default function Projects() {
   const [active, setActive] = useState('All');
-  const ref = useRef(null);
-  useScrollReveal(ref);
+  const stackRef = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: stackRef,
+    offset: ['start start', 'end end'],
+  });
 
   const filtered = active === 'All' ? projects : projects.filter(p => p.cat === active);
 
   return (
-    <section id="projects" className="sec" ref={ref}>
+    <section id="projects" className="sec projects-sec">
+      <span className="ghost-num" style={{ top: '-2rem', right: '-1rem' }}>04</span>
       <div className="wrap">
         <div className="sec-hdr">
-          <span className="sec-num">03 —</span>
-          <h2 className="sec-title">Featured <em>Projects</em></h2>
+          <h2 className="sec-title">Featured <em>Work</em></h2>
+          <span className="sec-num">Section 04</span>
         </div>
 
-        <div className="proj-filters sr-up">
+        <div className="proj-filters">
           {CATS.map(c => (
             <button
               key={c}
@@ -31,32 +74,16 @@ export default function Projects() {
             </button>
           ))}
         </div>
+      </div>
 
-        <div className="proj-grid">
-          {filtered.map((p, i) => (
-            <div
-              key={p.id}
-              className={`proj-card sr-card stagger-${Math.min(i + 1, 8)}`}
-            >
-              <div className="proj-ico">{p.e}</div>
-              <span className="proj-cat">{p.cat}</span>
-              <h3 className="proj-title">{p.title}</h3>
-              <p className="proj-desc">{p.desc}</p>
-              <div className="proj-tags">
-                {p.tech.map(t => <span key={t} className="tag">{t}</span>)}
-              </div>
-              <div className="proj-footer">
-                {p.gh !== '#' ? (
-                  <a href={p.gh} target="_blank" rel="noopener" className="proj-link">
-                    <GithubIcon /> Code
-                  </a>
-                ) : (
-                  <span className="proj-wip">🔧 In Development</span>
-                )}
-              </div>
-            </div>
-          ))}
-        </div>
+      <div
+        className="proj-stack"
+        ref={stackRef}
+        style={{ height: `${filtered.length * 60 + 60}vh` }}
+      >
+        {filtered.map((p, i) => (
+          <StickyProjectCard key={p.id} p={p} i={i} total={filtered.length} progress={scrollYProgress} />
+        ))}
       </div>
     </section>
   );

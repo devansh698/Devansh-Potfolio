@@ -1,12 +1,12 @@
 .footer {
-  padding: 2.5rem 0;
+  padding: 3rem 0;
   border-top: 1px solid var(--b);
   background: var(--bg);
 }
 
 .footer-inner {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
   gap: 1.5rem;
   flex-wrap: wrap;
@@ -14,21 +14,19 @@
 
 .f-logo {
   font-family: var(--ff);
-  font-size: 1.2rem;
-  font-weight: 800;
+  font-size: 1.3rem;
+  font-weight: 600;
+  font-style: italic;
   color: var(--t);
   display: block;
-  margin-bottom: .25rem;
+  margin-bottom: .35rem;
 }
-
-.f-logo span { color: var(--a); }
 
 .f-copy {
-  font-size: .8rem;
+  font-size: .78rem;
   color: var(--t3);
+  font-family: var(--fm);
 }
-
-.f-copy strong { color: var(--t2); }
 
 .f-links {
   display: flex;
@@ -37,14 +35,38 @@
 }
 
 .f-links a {
-  font-size: .82rem;
-  color: var(--t3);
-  transition: color .2s;
+  font-family: var(--fm);
+  font-size: .78rem;
+  color: var(--t2);
+  transition: var(--transition);
 }
 
-.f-links a:hover { color: var(--a); }
+.f-links a:hover { color: var(--flame); }
+
+.f-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: .4rem;
+  text-align: right;
+}
+
+.f-stamp {
+  font-family: var(--fm);
+  font-size: .7rem;
+  letter-spacing: .1em;
+  color: var(--flame);
+}
+
+.f-right a {
+  font-family: var(--fm);
+  font-size: .78rem;
+  color: var(--t2);
+}
+
+.f-right a:hover { color: var(--flame); }
 
 @media (max-width: 640px) {
   .footer-inner { justify-content: center; text-align: center; }
-  .f-links { justify-content: center; }
+  .f-links, .f-right { justify-content: center; align-items: center; }
 }

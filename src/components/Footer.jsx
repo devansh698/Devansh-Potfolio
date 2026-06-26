@@ -1,21 +1,24 @@
+import { links } from '../data';
 import './Footer.css';
+
+const navLinks = ['about', 'skills', 'projects', 'experience', 'certs', 'contact'];
 
 export default function Footer() {
   return (
     <footer className="footer">
       <div className="wrap footer-inner">
         <div className="f-left">
-          <a href="#home" className="f-logo">DH<span>.</span></a>
-          <p className="f-copy">
-            Designed & built by <strong>Devansh Handa</strong> · 2026
-          </p>
+          <a href="#home" className="f-logo">Devansh Handa</a>
+          <p className="f-copy">Full-Stack Software Developer · Yamuna Nagar, India</p>
         </div>
         <div className="f-links">
-          {['about', 'skills', 'projects', 'experience', 'certs', 'contact'].map(l => (
-            <a key={l} href={`#${l}`}>
-              {l.charAt(0).toUpperCase() + l.slice(1)}
-            </a>
+          {navLinks.map(l => (
+            <a key={l} href={`#${l}`}>{l.charAt(0).toUpperCase() + l.slice(1)}</a>
           ))}
+        </div>
+        <div className="f-right">
+          <span className="f-stamp">EOF — 2026</span>
+          <a href={`mailto:${links.email}`}>{links.email}</a>
         </div>
       </div>
     </footer>

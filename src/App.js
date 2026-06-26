@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import Lenis from 'lenis';
 import './styles/global.css';
 import './styles/animations.css';
 
@@ -11,43 +12,60 @@ import Experience from './components/Experience';
 import Certs from './components/Certs';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
+import Backdrop from './components/Backdrop';
+import Cursor from './components/Cursor';
 
 export default function App() {
   const [darkMode, setDarkMode] = useState(true);
   const [scrollPct, setScrollPct] = useState(0);
-  const [cursorPos, setCursorPos] = useState({ x: -999, y: -999 });
+  const lenisRef = useRef(null);
 
-  // Track scroll for progress bar
+  // Smooth scroll + scroll progress, driven off Lenis' own RAF loop
   useEffect(() => {
-    const onScroll = () => {
-      const el = document.documentElement;
-      const pct = (el.scrollTop / (el.scrollHeight - el.clientHeight)) * 100;
-      setScrollPct(Math.min(pct, 100));
+    const lenis = new Lenis({
+      duration: 1.15,
+      easing: (t) => 1 - Math.pow(1 - t, 3),
+      smoothWheel: true,
+    });
+    lenisRef.current = lenis;
+
+    lenis.on('scroll', ({ scroll, limit }) => {
+      setScrollPct(limit > 0 ? Math.min((scroll / limit) * 100, 100) : 0);
+    });
+
+    let raf;
+    const loop = (time) => {
+      lenis.raf(time);
+      raf = requestAnimationFrame(loop);
     };
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
-  }, []);
+    raf = requestAnimationFrame(loop);
 
-  // Cursor glow
-  useEffect(() => {
-    const onMove = (e) => setCursorPos({ x: e.clientX, y: e.clientY });
-    window.addEventListener('mousemove', onMove, { passive: true });
-    return () => window.removeEventListener('mousemove', onMove);
+    // Intercept in-page anchor links for buttery smooth jumps
+    const onClick = (e) => {
+      const link = e.target.closest('a[href^="#"]');
+      if (!link) return;
+      const id = link.getAttribute('href');
+      const target = id.length > 1 ? document.querySelector(id) : document.body;
+      if (!target) return;
+      e.preventDefault();
+      lenis.scrollTo(target, { offset: -20 });
+    };
+    document.addEventListener('click', onClick);
+
+    return () => {
+      cancelAnimationFrame(raf);
+      document.removeEventListener('click', onClick);
+      lenis.destroy();
+    };
   }, []);
 
   return (
     <div className={darkMode ? 'dark-mode' : 'light-mode'}>
-      {/* Progress bar */}
-      <div
-        className="progress-bar"
-        style={{ width: `${scrollPct}%` }}
-      />
+      <Backdrop />
+      <Cursor />
 
-      {/* Cursor glow */}
-      <div
-        className="cursor-glow"
-        style={{ left: cursorPos.x, top: cursorPos.y }}
-      />
+      {/* Progress bar */}
+      <div className="progress-bar" style={{ width: `${scrollPct}%` }} />
 
       <Navbar darkMode={darkMode} setDarkMode={setDarkMode} />
       <Hero />

@@ -1,17 +1,21 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import { motion, useScroll, useTransform } from 'framer-motion';
+import { links } from '../data';
+import { useSpotlight } from '../hooks/useSpotlight';
 import './Hero.css';
 
 const WORDS = [
   'Full-Stack Developer',
   'Software Engineer',
-  'PHP / Laravel Dev',
-  'React Specialist',
-  'ML Enthusiast',
-  'CS&E Student',
+  'MERN / Laravel Specialist',
+  'REST API Architect',
+  'Real-Time Systems Builder',
 ];
 
-const INNER_ICONS = ['⚛', '☕', '🐍', '🟢'];
-const OUTER_ICONS = ['🌀', '🍃', '🐬', '⚗', '☁', '🔥', '🧠'];
+const TICKER = [
+  'REACT', 'LARAVEL', 'NODE.JS', 'MERN STACK', 'FLASK', 'REST APIs',
+  'WEBSOCKETS', 'JWT AUTH', 'MONGODB', 'MYSQL', 'AWS', 'REDIS',
+];
 
 function useTypewriter(words) {
   const [display, setDisplay] = useState('');
@@ -21,14 +25,14 @@ function useTypewriter(words) {
 
   useEffect(() => {
     const word = words[wi % words.length];
-    const speed = deleting ? 28 : 68;
+    const speed = deleting ? 26 : 62;
 
     const t = setTimeout(() => {
       if (!deleting) {
         const next = ci + 1;
         setDisplay(word.slice(0, next));
         if (next === word.length) {
-          setTimeout(() => setDeleting(true), 1600);
+          setTimeout(() => setDeleting(true), 1500);
         } else {
           setCi(next);
         }
@@ -51,97 +55,91 @@ function useTypewriter(words) {
   return display;
 }
 
+const fadeUp = {
+  hidden: { opacity: 0, y: 28 },
+  show: (i = 0) => ({
+    opacity: 1,
+    y: 0,
+    transition: { delay: 0.12 * i, duration: 0.75, ease: [0.16, 1, 0.3, 1] },
+  }),
+};
+
 export default function Hero() {
   const typed = useTypewriter(WORDS);
+  const spot = useSpotlight();
+  const heroRef = useRef(null);
+  const { scrollYProgress } = useScroll({ target: heroRef, offset: ['start start', 'end start'] });
+  const ghostY = useTransform(scrollYProgress, [0, 1], [0, 220]);
 
   return (
-    <section id="home" className="hero">
-      {/* Background */}
-      <div className="hero-bg">
-        <div className="hero-grid" />
-        <div className="orb o1" />
-        <div className="orb o2" />
-      </div>
+    <section id="home" className="hero" ref={heroRef}>
+      <div className="crop tl" /><div className="crop tr" /><div className="crop bl" /><div className="crop br" />
+      <div className="hero-grid" />
+      <motion.span className="ghost-num hero-ghost" style={{ y: ghostY }}>01</motion.span>
 
       <div className="hero-inner wrap">
-        {/* LEFT */}
-        <div className="hero-left">
-          <div className="eyebrow">
-            <span className="edot" />
-            Currently @ Oriental Outsourcing
-          </div>
+        <motion.div className="stamp" initial="hidden" animate="show" custom={0} variants={fadeUp}>
+          Open to Backend &amp; Full-Stack Roles
+        </motion.div>
 
-          <h1 className="name">
-            <span>Devansh</span>
-            <span className="grad">Handa</span>
-          </h1>
+        <motion.h1 className="name" initial="hidden" animate="show" custom={1} variants={fadeUp}>
+          <span>Devansh</span>
+          <span className="ital">Handa</span>
+        </motion.h1>
 
-          <div className="typed-row">
-            <span className="prefix">I build → </span>
-            <span className="typed-word">{typed}</span>
-            <span className="cur blink-cursor">|</span>
-          </div>
+        <motion.div className="typed-row" initial="hidden" animate="show" custom={2} variants={fadeUp}>
+          <span className="prefix">Currently shipping as a&nbsp;</span>
+          <span className="typed-word">{typed}</span>
+          <span className="cur blink-cursor">_</span>
+        </motion.div>
 
-          <p className="bio">
-            CS&amp;E student crafting impactful software through clean code,
-            modern frameworks, and a relentless focus on user experience.
-            Currently open to internships &amp; full-time roles.
-          </p>
+        <motion.p className="bio" initial="hidden" animate="show" custom={3} variants={fadeUp}>
+          Software Engineer at Oriental Outsourcing — went from intern to full-time
+          inside a year, shipping production CRM systems across the MERN and
+          Laravel stacks. I design REST APIs, build real-time features, and care
+          about code that's still readable six months later.
+        </motion.p>
 
-          <div className="hero-btns">
-            <a href="#projects" className="btn-solid">View Work ↗</a>
-            <a href="#contact" className="btn-ghost">Say Hello</a>
-          </div>
-
+        <motion.div className="hero-actions" initial="hidden" animate="show" custom={4} variants={fadeUp}>
+          <a href="#projects" className="btn-solid">View Work ↗</a>
+          <a href="#contact" className="btn-ghost">Get In Touch</a>
           <div className="socials">
-            <a href="https://github.com/devansh698/" target="_blank" rel="noopener" className="sc" title="GitHub">
-              <GithubIcon />
-            </a>
-            <a href="https://linkedin.com/in/devanshhanda" target="_blank" rel="noopener" className="sc" title="LinkedIn">
-              <LinkedinIcon />
-            </a>
-            <a href="mailto:devanshhanda0001@gmail.com" className="sc" title="Email">
-              <MailIcon />
-            </a>
+            <a href={links.github} target="_blank" rel="noopener noreferrer" className="sc" title="GitHub"><GithubIcon /></a>
+            <a href={links.linkedin} target="_blank" rel="noopener noreferrer" className="sc" title="LinkedIn"><LinkedinIcon /></a>
+            <a href={`mailto:${links.email}`} className="sc" title="Email"><MailIcon /></a>
           </div>
+        </motion.div>
 
-          <div className="stats-row">
-            <div className="stat">
-              <span className="stat-n">11+</span>
-              <span className="stat-l">Specializations</span>
-            </div>
-            <div className="stat">
-              <span className="stat-n">7+</span>
-              <span className="stat-l">Projects</span>
-            </div>
-            <div className="stat">
-              <span className="stat-n">2026</span>
-              <span className="stat-l">Graduating</span>
-            </div>
-          </div>
-        </div>
+        <motion.div className="stat-cards" initial="hidden" animate="show" custom={5} variants={fadeUp}>
+          {[
+            { n: '01+', l: 'Year in Production' },
+            { n: '06+', l: 'Projects Shipped' },
+            { n: '20+', l: 'Certifications' },
+          ].map((s, i) => (
+            <motion.div
+              key={s.l}
+              className="stat-card spotlight"
+              onMouseMove={spot}
+              whileHover={{ y: -6, rotate: i % 2 ? 1.5 : -1.5 }}
+              style={{ '--rot': `${i % 2 ? 1 : -1}deg` }}
+            >
+              <span className="stat-n">{s.n}</span>
+              <span className="stat-l">{s.l}</span>
+            </motion.div>
+          ))}
+        </motion.div>
+      </div>
 
-        {/* RIGHT — orbit */}
-        <div className="orbit-wrap">
-          <div className="ring ring-1">
-            {INNER_ICONS.map((ico, i) => (
-              <div key={i} className={`oi oi-inner-${i}`}>{ico}</div>
-            ))}
-          </div>
-          <div className="ring ring-2">
-            {OUTER_ICONS.map((ico, i) => (
-              <div key={i} className={`oi oi-outer-${i}`}>{ico}</div>
-            ))}
-          </div>
-          <div className="orbit-center">
-            <span className="oc-label">CS&amp;E</span>
-            <span className="oc-sub">Full-Stack</span>
-          </div>
+      <div className="ticker-strip">
+        <div className="marquee">
+          {[...TICKER, ...TICKER].map((w, i) => (
+            <span key={i} className="ticker-item">{w} <span className="ticker-dot">●</span></span>
+          ))}
         </div>
       </div>
 
       <a href="#about" className="scroll-cue">
-        <span className="sdot" />
+        <span className="sline" />
         Scroll
       </a>
     </section>

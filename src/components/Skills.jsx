@@ -7,7 +7,6 @@ export default function Skills() {
   const ref = useRef(null);
   useScrollReveal(ref);
 
-  // Animate bars when section enters view
   useEffect(() => {
     const io = new IntersectionObserver(
       ([entry]) => {
@@ -27,32 +26,28 @@ export default function Skills() {
 
   return (
     <section id="skills" className="sec skills-sec" ref={ref}>
+      <span className="ghost-num" style={{ top: '-2rem', left: '-1rem' }}>03</span>
       <div className="wrap">
         <div className="sec-hdr">
-          <span className="sec-num">02 —</span>
           <h2 className="sec-title">Tech <em>Stack</em></h2>
+          <span className="sec-num">Section 03</span>
         </div>
 
-        <div className="skills-grid">
+        <div className="skills-list">
+          <div className="skills-list-head">
+            <span>Skill</span>
+            <span>Proficiency</span>
+          </div>
           {skills.map((s, i) => (
-            <div
-              key={s.name}
-              className={`skill-card sr-card stagger-${Math.min(i + 1, 8)}`}
-            >
-              <div className="skill-top">
-                <div className="skill-icon">{s.ico}</div>
-                <div>
-                  <div className="skill-name">{s.name}</div>
-                  <div className="skill-pct">{s.level}%</div>
-                </div>
+            <div key={s.name} className={`skill-row sr-up stagger-${Math.min(i + 1, 8)}`}>
+              <div className="skill-name-col">
+                <span className="skill-ico">{s.ico}</span>
+                <span className="skill-name">{s.name}</span>
               </div>
               <div className="bar-track">
-                <div
-                  className="bar-fill"
-                  data-level={s.level}
-                  style={{ width: 0 }}
-                />
+                <div className="bar-fill" data-level={s.level} style={{ width: 0 }} />
               </div>
+              <span className="skill-pct">{s.level}%</span>
             </div>
           ))}
         </div>

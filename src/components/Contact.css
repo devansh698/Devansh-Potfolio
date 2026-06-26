@@ -1,4 +1,4 @@
-.contact-sec { background: var(--bg2); }
+.contact-sec { background: var(--panel); position: relative; }
 
 .contact-grid {
   display: grid;
@@ -9,59 +9,52 @@
 
 .contact-lead {
   color: var(--t2);
-  font-size: 1.05rem;
-  line-height: 1.85;
-  margin-bottom: 2rem;
+  font-family: var(--ff);
+  font-size: 1.2rem;
+  line-height: 1.6;
+  margin-bottom: 2.5rem;
 }
 
 .contact-items {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
 }
 
 .contact-item {
   display: flex;
   align-items: center;
-  gap: 1rem;
-  padding: 1rem 1.25rem;
-  background: var(--card);
-  border: 1px solid var(--b);
-  border-radius: var(--r);
+  gap: 1.2rem;
+  padding: 1.2rem 0;
+  border-top: 1px solid var(--b);
   text-decoration: none;
-  transition: border-color .3s, background .3s, transform .25s;
+  transition: var(--transition);
 }
 
-.contact-item:hover {
-  border-color: var(--a);
-  background: var(--ag);
-  transform: translateX(4px);
+.contact-items :first-child { border-top: none; }
+
+.contact-item:not(.static):hover {
+  padding-left: .75rem;
+  color: var(--flame);
 }
 
-.ci-icon {
-  width: 42px;
-  height: 42px;
-  border-radius: 10px;
-  background: var(--ag);
-  display: grid;
-  place-items: center;
-  font-size: 1rem;
-  color: var(--a);
-  font-family: var(--ff);
-  font-weight: 800;
+.ci-n {
+  font-family: var(--fm);
+  font-size: .72rem;
+  color: var(--flame);
   flex-shrink: 0;
 }
 
 .ci-label {
-  font-size: .72rem;
+  font-size: .7rem;
   color: var(--t3);
   letter-spacing: .06em;
   text-transform: uppercase;
-  margin-bottom: .15rem;
+  margin-bottom: .2rem;
+  font-family: var(--fm);
 }
 
 .ci-val {
-  font-size: .88rem;
+  font-size: .92rem;
   color: var(--t);
   font-weight: 500;
 }
@@ -70,41 +63,48 @@
 .contact-form {
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
+  gap: 1.4rem;
+  border: 1px solid var(--b);
+  padding: 2.2rem;
+  background: var(--bg);
 }
 
 .form-error {
   margin: -0.3rem 0 0;
-  color: #ff8b8b;
-  font-size: 0.88rem;
+  color: var(--flame);
+  font-size: 0.85rem;
   line-height: 1.5;
+  font-family: var(--fm);
 }
 
 .field {
   display: flex;
   flex-direction: column;
-  gap: .45rem;
+  gap: .5rem;
 }
 
 .field label {
-  font-size: .8rem;
+  font-size: .72rem;
   font-weight: 600;
-  color: var(--t2);
-  letter-spacing: .04em;
+  color: var(--t3);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  font-family: var(--fm);
 }
 
 .field input,
 .field textarea {
   width: 100%;
-  padding: .85rem 1.1rem;
-  background: var(--card);
-  border: 1px solid var(--b);
-  border-radius: 10px;
+  padding: .85rem 0;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--b);
+  border-radius: 0;
   color: var(--t);
   font-family: var(--fb);
-  font-size: .93rem;
+  font-size: .98rem;
   resize: vertical;
-  transition: border-color .3s, box-shadow .3s;
+  transition: var(--transition);
   outline: none;
 }
 
@@ -112,29 +112,32 @@
 .field textarea::placeholder { color: var(--t3); }
 
 .field input:focus,
-.field textarea:focus {
-  border-color: var(--a);
-  box-shadow: 0 0 0 3px rgba(0,229,255,.08);
-}
+.field textarea:focus { border-bottom-color: var(--flame); }
 
 /* ── SENT STATE ── */
 .sent-msg {
-  background: var(--card);
-  border: 1px solid var(--b);
-  border-radius: var(--r);
-  padding: 3rem;
+  border: 1px solid var(--moss);
+  padding: 3.5rem 2.5rem;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  gap: .75rem;
+  gap: 1rem;
 }
 
-.sent-ico { font-size: 3rem; }
+.sent-stamp {
+  font-family: var(--fm);
+  font-size: .75rem;
+  letter-spacing: .2em;
+  color: var(--moss);
+  border: 2px solid var(--moss);
+  padding: .4rem 1.2rem;
+  transform: rotate(-4deg);
+}
 
 .sent-msg h3 {
   font-family: var(--ff);
-  font-size: 1.4rem;
+  font-size: 1.6rem;
 }
 
 .sent-msg p {

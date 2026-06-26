@@ -1,112 +1,99 @@
 /* ── KEYFRAMES ── */
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(30px); }
-  to   { opacity: 1; transform: none; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: none; } }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+@keyframes pulse-dot {
+  0%   { box-shadow: 0 0 0 0 var(--mossg); }
+  70%  { box-shadow: 0 0 0 7px transparent; }
+  100% { box-shadow: 0 0 0 0 transparent; }
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to   { opacity: 1; }
-}
-
-@keyframes blink {
-  0%, 100% { opacity: 1; }
-  50%       { opacity: 0; }
-}
-
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
-
-@keyframes spin-r {
-  to { transform: rotate(-360deg); }
-}
-
-@keyframes glow {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(0,229,255,.5); }
-  50%       { box-shadow: 0 0 0 8px rgba(0,229,255,0); }
-}
-
-@keyframes glowP {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(139,92,246,.5); }
-  50%       { box-shadow: 0 0 0 8px rgba(139,92,246,0); }
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
 }
 
 @keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50%       { transform: translateY(-12px); }
+  0%, 100% { transform: translateY(0) rotate(var(--rot, 0deg)); }
+  50%      { transform: translateY(-14px) rotate(var(--rot, 0deg)); }
 }
 
-@keyframes bob {
-  0%, 100% { transform: translateX(-50%) translateY(0); }
-  50%       { transform: translateX(-50%) translateY(8px); }
+@keyframes ticker-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: .25; }
 }
 
-@keyframes shimmer {
-  0%   { background-position: -200% 0; }
-  100% { background-position:  200% 0; }
+@keyframes drawLine {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
 }
 
 /* ── SCROLL-REVEAL CLASSES ── */
-/* Applied via JS IntersectionObserver — mirrors Motion's whileInView */
-
 .sr-up {
   opacity: 0;
-  transform: translateY(28px);
-  transition: opacity .65s cubic-bezier(.22,1,.36,1),
-              transform .65s cubic-bezier(.22,1,.36,1);
+  filter: blur(6px);
+  transform: translateY(46px) scale(.97);
+  transition: opacity .8s var(--ease), transform .8s var(--ease), filter .8s var(--ease);
 }
 
 .sr-left {
   opacity: 0;
-  transform: translateX(-36px);
-  transition: opacity .65s cubic-bezier(.22,1,.36,1),
-              transform .65s cubic-bezier(.22,1,.36,1);
+  filter: blur(6px);
+  transform: translateX(-56px) scale(.97);
+  transition: opacity .8s var(--ease), transform .8s var(--ease), filter .8s var(--ease);
 }
 
 .sr-right {
   opacity: 0;
-  transform: translateX(36px);
-  transition: opacity .65s cubic-bezier(.22,1,.36,1),
-              transform .65s cubic-bezier(.22,1,.36,1);
+  filter: blur(6px);
+  transform: translateX(56px) scale(.97);
+  transition: opacity .8s var(--ease), transform .8s var(--ease), filter .8s var(--ease);
 }
 
-/* Spring-card — mimics Motion cardVariants offscreen→onscreen */
 .sr-card {
   opacity: 0;
-  transform: translateY(60px) scale(0.95);
-  transition: opacity .7s cubic-bezier(.22,1,.36,1),
-              transform .7s cubic-bezier(.22,1,.36,1);
+  filter: blur(8px);
+  transform: translateY(64px) scale(.92) rotate(var(--card-rot, 0deg));
+  transition: opacity .85s var(--ease), transform .85s var(--ease), filter .85s var(--ease);
+}
+
+.sr-scale {
+  opacity: 0;
+  filter: blur(6px);
+  transform: scale(.8);
+  transition: opacity .7s var(--ease), transform .7s var(--ease), filter .7s var(--ease);
 }
 
 .sr-up.visible,
 .sr-left.visible,
 .sr-right.visible,
-.sr-card.visible {
+.sr-card.visible,
+.sr-scale.visible {
   opacity: 1;
+  filter: blur(0);
   transform: none;
 }
+.sr-card.visible { transform: scale(1) rotate(var(--card-rot, 0deg)); }
 
-/* Stagger delays for grid children */
-.stagger-1 { transition-delay: .07s; }
-.stagger-2 { transition-delay: .14s; }
-.stagger-3 { transition-delay: .21s; }
-.stagger-4 { transition-delay: .28s; }
-.stagger-5 { transition-delay: .35s; }
-.stagger-6 { transition-delay: .42s; }
-.stagger-7 { transition-delay: .49s; }
-.stagger-8 { transition-delay: .56s; }
+.stagger-1 { transition-delay: .06s; }
+.stagger-2 { transition-delay: .12s; }
+.stagger-3 { transition-delay: .18s; }
+.stagger-4 { transition-delay: .24s; }
+.stagger-5 { transition-delay: .30s; }
+.stagger-6 { transition-delay: .36s; }
+.stagger-7 { transition-delay: .42s; }
+.stagger-8 { transition-delay: .48s; }
 
-/* ── UTILITY ANIMATIONS ── */
-.float-anim {
-  animation: float 6s ease-in-out infinite;
+/* ── MARQUEE ── */
+.marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee 26s linear infinite;
 }
+.marquee:hover { animation-play-state: paused; }
 
-.pulse-dot {
-  animation: glow 2s infinite;
-}
-
-.blink-cursor {
-  animation: blink 1s step-end infinite;
-  color: var(--a);
-}
+/* ── UTILITY ── */
+.float-anim { animation: float 6s ease-in-out infinite; }
+.blink-cursor { animation: blink 1s step-end infinite; color: var(--flame); }

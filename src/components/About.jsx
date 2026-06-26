@@ -1,95 +1,97 @@
 import { useRef } from 'react';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import { useScrollReveal } from '../hooks/useScrollReveal';
+import { useSpotlight } from '../hooks/useSpotlight';
+import { education, links } from '../data';
 import './About.css';
 
-const timeline = [
-  {
-    yr: '2025 – Present',
-    role: 'Software Developer Intern',
-    org: 'Oriental Outsourcing',
-    desc: 'Building and maintaining full-stack web applications using React, Node.js, and MySQL. Collaborating with cross-functional teams to deliver scalable business solutions.',
-    accent: 'a',
-  },
-  {
-    yr: '2024',
-    role: 'Cisco AICTE Virtual Intern',
-    org: 'Cisco Networking Academy',
-    desc: 'Completed virtual internship focusing on cybersecurity fundamentals, network infrastructure, and AI applications in modern enterprise environments.',
-    accent: 'a2',
-  },
-  {
-    yr: '2022 – 2026',
-    role: 'B.E. Computer Science & Engineering',
-    org: 'Chitkara University',
-    desc: 'Pursuing a four-year engineering degree with specialisations in full-stack development, machine learning, and software product management. CGPA: 8.5+',
-    accent: 'a3',
-  },
-  {
-    yr: '2022',
-    role: 'Class XII – Science (PCM)',
-    org: 'D.A.V. Public School, Hisar',
-    desc: 'Completed senior secondary with Physics, Chemistry, and Mathematics. Developed a strong analytical foundation that drives my engineering approach.',
-    accent: 'a2',
-  },
+const file = [
+  { k: 'Role', v: 'Software Engineer' },
+  { k: 'Company', v: 'Oriental Outsourcing' },
+  { k: 'Stack', v: 'MERN · Laravel · Flask' },
+  { k: 'Based In', v: 'Yamuna Nagar, India' },
+  { k: 'Status', v: 'Open to new roles' },
 ];
 
 export default function About() {
   const ref = useRef(null);
+  const spot = useSpotlight();
   useScrollReveal(ref);
 
+  const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] });
+  const fileY = useTransform(scrollYProgress, [0, 1], [40, -40]);
+  const eduY = useTransform(scrollYProgress, [0, 1], [70, -70]);
+
   return (
-    <section id="about" className="sec" ref={ref}>
+    <section id="about" className="sec about-sec" ref={ref}>
+      <span className="ghost-num" style={{ top: '-2rem', right: '-1rem' }}>02</span>
       <div className="wrap">
         <div className="sec-hdr">
-          <span className="sec-num">01 —</span>
           <h2 className="sec-title">About <em>Me</em></h2>
+          <span className="sec-num">Section 02</span>
         </div>
 
         <div className="about-grid">
           <div className="about-left sr-left">
             <p className="about-lead">
-              Hey! I'm <strong>Devansh Handa</strong>, a Computer Science &amp; Engineering
-              student at Chitkara University with a passion for building software that
-              genuinely makes a difference.
+              I'm <strong>Devansh Handa</strong> — a full-stack developer who went
+              from intern to Software Engineer at Oriental Outsourcing in under a
+              year, and I'm finishing my B.E. in Computer Science &amp; Engineering
+              at Chitkara University alongside it.
             </p>
             <p>
-              I thrive at the intersection of elegant front-end experiences and robust
-              back-end architecture — whether that's a MERN-stack product or a
-              machine-learning pipeline. When I'm not coding, I'm exploring new
-              certifications, contributing to open-source, or diving deep into AI research.
+              My day-to-day is building and maintaining live CRM applications:
+              REST APIs, database schemas, WebSocket-driven real-time features,
+              and the front-end that ties it together — across MERN, Laravel,
+              and Flask. I like the parts of the job tutorials skip: keeping a
+              production system stable while you change it.
             </p>
             <p>
-              I'm actively seeking internship and full-time opportunities where I can
-              ship real-world impact alongside great teams.
+              Outside of shipping features, I've put real hours into the
+              fundamentals — data structures &amp; algorithms, applied machine
+              learning, cloud architecture — because I want to understand systems
+              from the query layer up to deployment, not just glue libraries
+              together.
             </p>
 
             <div className="about-tags">
-              {['React', 'Node.js', 'Python', 'Java', 'Laravel', 'AWS', 'PyTorch', 'MongoDB'].map(t => (
+              {['React', 'Node.js', 'Laravel', 'Flask', 'MongoDB', 'MySQL', 'AWS', 'WebSockets'].map(t => (
                 <span key={t} className="tag">{t}</span>
               ))}
             </div>
 
-            <a
-              href="mailto:devanshhanda0001@gmail.com"
-              className="btn-solid"
-              style={{ marginTop: '2rem', display: 'inline-flex' }}
-            >
-              Work with me →
+            <a href={`mailto:${links.email}`} className="btn-solid" style={{ marginTop: '2.5rem' }}>
+              Work With Me →
             </a>
           </div>
 
-          <div className="timeline-wrap sr-right">
-            {timeline.map((item, i) => (
-              <div key={i} className={`tl-item stagger-${i + 1}`}>
-                <div className={`tl-dot dot-${item.accent}`} />
-                <div className="tl-content">
-                  <span className={`tl-yr yr-${item.accent}`}>{item.yr}</span>
-                  <h4 className="tl-role">{item.role}</h4>
-                  <span className="tl-org">{item.org}</span>
-                  <p className="tl-desc">{item.desc}</p>
-                </div>
+          <div className="file-wrap sr-right">
+            <motion.div className="file-card spotlight" onMouseMove={spot} style={{ y: fileY }}>
+              <div className="file-head">
+                <span>CASE FILE</span>
+                <span className="file-id">#DH-2026</span>
               </div>
-            ))}
+              {file.map((f) => (
+                <div key={f.k} className="file-row">
+                  <span className="file-k">{f.k}</span>
+                  <span className="file-v">{f.v}</span>
+                </div>
+              ))}
+              <div className="file-stamp">VERIFIED</div>
+            </motion.div>
+
+            <motion.div className="edu-card spotlight" onMouseMove={spot} style={{ y: eduY }}>
+              <span className="edu-label">Education</span>
+              {education.map((e, i) => (
+                <div key={i} className="edu-row">
+                  <span className="edu-period">{e.period}</span>
+                  <div>
+                    <div className="edu-deg">{e.deg}</div>
+                    <div className="edu-org">{e.org}</div>
+                  </div>
+                </div>
+              ))}
+            </motion.div>
           </div>
         </div>
       </div>

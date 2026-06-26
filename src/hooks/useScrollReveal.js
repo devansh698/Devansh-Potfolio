@@ -50,6 +50,7 @@ export function useSingleReveal(options = {}) {
     );
     io.observe(el);
     return () => io.disconnect();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return ref;
