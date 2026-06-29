@@ -25,7 +25,7 @@ export default function Navbar({ darkMode, setDarkMode }) {
 
   return (
     <nav className={`navbar ${scrolled ? 'scrolled' : ''}`}>
-      <div className="nav-inner wrap">
+      <div className="nav-inner">
         <a href="#home" className="logo">
           <span className="logo-mark">DH</span>
           <span className="logo-idx">N° 01</span>

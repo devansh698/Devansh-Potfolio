@@ -46,8 +46,6 @@
 }
 
 .cert-card {
-  background: var(--panel);
-  border: 1px solid var(--b);
   padding: 1.6rem;
   display: flex;
   flex-direction: column;
@@ -57,9 +55,9 @@
 }
 
 .cert-card:hover {
-  border-color: var(--flame);
-  transform: translate(-3px, -3px);
-  box-shadow: 4px 4px 0 var(--flameg);
+  border-color: var(--flame) !important;
+  transform: translateY(-4px);
+  box-shadow: 0 16px 36px -10px var(--flameg), 0 0 0 1px var(--flameg);
 }
 
 .cert-top {
@@ -117,7 +115,13 @@
   transition: var(--transition);
 }
 
-.course-row:hover { padding-left: .75rem; color: var(--flame); }
+.course-row:hover {
+  padding-left: 1rem;
+  color: var(--flame);
+  background: var(--panel);
+  border-radius: var(--r);
+  box-shadow: 0 0 0 1px var(--flameg);
+}
 
 .course-title {
   font-weight: 500;

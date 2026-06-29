@@ -6,6 +6,7 @@ export default function Backdrop() {
   const b1 = useRef(null);
   const b2 = useRef(null);
   const b3 = useRef(null);
+  const b4 = useRef(null);
 
   useEffect(() => {
     let ticking = false;
@@ -18,6 +19,7 @@ export default function Backdrop() {
         if (b1.current) b1.current.style.transform = `translate3d(0, ${y * -0.12}px, 0)`;
         if (b2.current) b2.current.style.transform = `translate3d(0, ${y * 0.16}px, 0)`;
         if (b3.current) b3.current.style.transform = `translate3d(0, ${y * -0.06}px, 0)`;
+        if (b4.current) b4.current.style.transform = `translate3d(0, ${y * 0.1}px, 0)`;
         ticking = false;
       });
     };
@@ -31,6 +33,7 @@ export default function Backdrop() {
       <div className="bd-blob bd-1" ref={b1} />
       <div className="bd-blob bd-2" ref={b2} />
       <div className="bd-blob bd-3" ref={b3} />
+      <div className="bd-blob bd-4" ref={b4} />
       <div className="bd-scanline" />
     </div>
   );

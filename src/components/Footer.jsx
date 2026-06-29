@@ -9,7 +9,7 @@ export default function Footer() {
       <div className="wrap footer-inner">
         <div className="f-left">
           <a href="#home" className="f-logo">Devansh Handa</a>
-          <p className="f-copy">Full-Stack Software Developer · Yamuna Nagar, India</p>
+          <p className="f-copy">Full-Stack Software Developer · Kurukshetra, India</p>
         </div>
         <div className="f-links">
           {navLinks.map(l => (

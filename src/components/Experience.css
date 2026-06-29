@@ -27,18 +27,25 @@
 
 .exp-trace-fg {
   fill: none;
-  stroke: var(--flame);
-  stroke-width: 2;
+  stroke-width: 2.5;
   vector-effect: non-scaling-stroke;
-  filter: drop-shadow(0 0 4px var(--flameg));
+  filter: drop-shadow(0 0 6px var(--flameg));
 }
 
 .exp-card {
   border-bottom: 1px solid var(--b);
-  padding: 2.5rem 0;
+  padding: 2.5rem 1.5rem;
+  margin: 0 -1.5rem;
   display: grid;
   grid-template-columns: 200px 1fr;
   gap: 2.5rem;
+  border-radius: var(--r);
+  transition: var(--transition);
+}
+
+.exp-card:hover {
+  background: rgba(255,255,255,.03);
+  box-shadow: 0 0 0 1px var(--flameg);
 }
 
 .exp-card:first-child { padding-top: 0; }

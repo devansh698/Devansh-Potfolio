@@ -6,53 +6,53 @@
   pointer-events: none;
 }
 
-.bd-grid {
-  position: absolute;
-  inset: -20% 0 0 0;
-  height: 140%;
-  background-image:
-    linear-gradient(var(--b) 1px, transparent 1px),
-    linear-gradient(90deg, var(--b) 1px, transparent 1px);
-  background-size: 64px 64px;
-  opacity: .55;
-  will-change: transform;
-}
+.bd-grid { display: none; }
 
 .bd-blob {
   position: absolute;
   border-radius: 50%;
-  filter: blur(110px);
+  filter: blur(90px);
   will-change: transform;
 }
 
 .bd-1 {
-  width: 620px;
-  height: 620px;
+  width: 680px;
+  height: 680px;
   top: -10%;
   right: -12%;
   background: radial-gradient(circle, var(--flame) 0%, transparent 70%);
-  opacity: .10;
+  opacity: .35;
   animation: drift1 22s ease-in-out infinite;
 }
 
 .bd-2 {
-  width: 520px;
-  height: 520px;
+  width: 600px;
+  height: 600px;
   top: 55%;
   left: -14%;
   background: radial-gradient(circle, var(--moss) 0%, transparent 70%);
-  opacity: .08;
+  opacity: .30;
   animation: drift2 26s ease-in-out infinite;
 }
 
 .bd-3 {
-  width: 420px;
-  height: 420px;
+  width: 480px;
+  height: 480px;
   top: 110%;
   right: 8%;
-  background: radial-gradient(circle, var(--flame) 0%, transparent 70%);
-  opacity: .07;
+  background: radial-gradient(circle, var(--blue) 0%, transparent 70%);
+  opacity: .25;
   animation: drift3 19s ease-in-out infinite;
+}
+
+.bd-4 {
+  width: 420px;
+  height: 420px;
+  top: 25%;
+  left: 30%;
+  background: radial-gradient(circle, var(--lime) 0%, transparent 70%);
+  opacity: .16;
+  animation: drift2 31s ease-in-out infinite reverse;
 }
 
 .bd-scanline {

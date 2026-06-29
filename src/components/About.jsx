@@ -9,7 +9,7 @@ const file = [
   { k: 'Role', v: 'Software Engineer' },
   { k: 'Company', v: 'Oriental Outsourcing' },
   { k: 'Stack', v: 'MERN · Laravel · Flask' },
-  { k: 'Based In', v: 'Yamuna Nagar, India' },
+  { k: 'Based In', v: 'Kurukshetra, India' },
   { k: 'Status', v: 'Open to new roles' },
 ];
 

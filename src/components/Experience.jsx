@@ -24,6 +24,12 @@ export default function Experience() {
 
         <div className="exp-list" ref={listRef}>
           <svg className="exp-trace" viewBox="0 0 24 300" preserveAspectRatio="none" aria-hidden="true">
+            <defs>
+              <linearGradient id="traceGrad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" style={{ stopColor: 'var(--flame)' }} />
+                <stop offset="100%" style={{ stopColor: 'var(--moss)' }} />
+              </linearGradient>
+            </defs>
             <path
               d="M12 0 L12 40 L4 60 L4 100 L20 130 L20 180 L12 200 L12 260 L12 300"
               className="exp-trace-bg"
@@ -31,6 +37,7 @@ export default function Experience() {
             <motion.path
               d="M12 0 L12 40 L4 60 L4 100 L20 130 L20 180 L12 200 L12 260 L12 300"
               className="exp-trace-fg"
+              stroke="url(#traceGrad)"
               style={{ pathLength: scrollYProgress }}
             />
           </svg>

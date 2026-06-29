@@ -16,8 +16,11 @@
   font-family: var(--ff);
   font-size: 1.3rem;
   font-weight: 600;
-  font-style: italic;
-  color: var(--t);
+  font-style: normal;
+  background: linear-gradient(135deg, var(--flame), var(--moss));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
   display: block;
   margin-bottom: .35rem;
 }

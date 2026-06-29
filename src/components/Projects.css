@@ -10,7 +10,10 @@
 .filter-btn {
   padding: .55rem 1.3rem;
   border: 1px solid var(--b);
-  background: transparent;
+  border-radius: 100px;
+  background: var(--panel);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
   color: var(--t2);
   font-family: var(--fm);
   font-size: .76rem;
@@ -23,7 +26,7 @@
 .filter-btn:hover,
 .filter-btn.active {
   border-color: var(--flame);
-  background: var(--flameg);
+  box-shadow: 0 0 0 1px var(--flameg);
   color: var(--flame);
 }
 
@@ -41,8 +44,6 @@
 }
 
 .proj-card {
-  background: var(--panel);
-  border: 1px solid var(--b);
   padding: 2.4rem;
   display: flex;
   flex-direction: column;
@@ -50,8 +51,10 @@
   cursor: default;
   width: 100%;
   max-width: 760px;
-  box-shadow: 0 30px 60px -20px rgba(0,0,0,.5);
+  box-shadow: 0 30px 60px -20px rgba(0,0,0,.6), 0 0 0 1px var(--flameg);
 }
+
+.proj-card:hover { border-color: var(--flame) !important; }
 
 .proj-card-top {
   display: flex;
@@ -74,7 +77,9 @@
   letter-spacing: .1em;
   text-transform: uppercase;
   border: 1px solid var(--flame);
-  padding: .15rem .5rem;
+  border-radius: 100px;
+  padding: .2rem .6rem;
+  box-shadow: 0 0 10px -2px var(--flame);
 }
 
 .proj-title {
