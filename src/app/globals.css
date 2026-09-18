@@ -1,0 +1,374 @@
+@import 'tailwindcss';
+
+/* ── Themes ───────────────────────────────────────────────────────────
+   Art direction: a technical publication. Riso-printed paper by default,
+   with two press variants. Every colour is a semantic token so the theme
+   switcher can repaint the whole site, 3D scene included. */
+:root,
+[data-theme='press'] {
+  --bg: #f2eee3;
+  --surface: #eae5d7;
+  --surface-2: #ded7c4;
+  --fg: #15120e;
+  --muted: #5d5749;
+  --line: rgb(21 18 14 / 0.22);
+  --accent: #2b44e0;
+  --on-accent: #f7f4ec;
+  --accent-2: #e0452b;
+  --grain-opacity: 0.32;
+  color-scheme: light;
+}
+
+[data-theme='blueprint'] {
+  --bg: #091320;
+  --surface: #0e1d2d;
+  --surface-2: #17293b;
+  --fg: #e7f1f7;
+  --muted: #8ba5b8;
+  --line: rgb(231 241 247 / 0.18);
+  --accent: #ff6a3d;
+  --on-accent: #091320;
+  --accent-2: #63e2ff;
+  --grain-opacity: 0.16;
+  color-scheme: dark;
+}
+
+[data-theme='darkroom'] {
+  --bg: #131010;
+  --surface: #1b1716;
+  --surface-2: #272120;
+  --fg: #f0e7da;
+  --muted: #9b8f82;
+  --line: rgb(240 231 218 / 0.18);
+  --accent: #e4572e;
+  --on-accent: #f0e7da;
+  --accent-2: #c9b27c;
+  --grain-opacity: 0.2;
+  color-scheme: dark;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-accent: var(--accent);
+  --color-on-accent: var(--on-accent);
+  --color-accent-2: var(--accent-2);
+
+  --font-display: var(--font-serif);
+  --font-sans: var(--font-archivo);
+  --font-mono: var(--font-mono-face);
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+html {
+  background: var(--bg);
+  color: var(--fg);
+  -webkit-font-smoothing: antialiased;
+  transition: background-color 0.5s var(--ease-out-expo), color 0.5s var(--ease-out-expo);
+}
+
+body {
+  background: var(--bg);
+  font-family: var(--font-sans);
+  overflow-x: clip;
+}
+
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-stopped {
+  overflow: clip;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--on-accent);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+@media (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  html.has-cursor,
+  html.has-cursor a,
+  html.has-cursor button {
+    cursor: none;
+  }
+}
+
+/* ── Editorial utilities ─────────────────────────────────────────── */
+
+/** Display face: high-contrast serif, set tight and large. */
+@utility display {
+  font-family: var(--font-display);
+  font-weight: 400;
+  letter-spacing: -0.025em;
+  line-height: 0.88;
+}
+
+@utility label {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+@utility gutter {
+  padding-inline: clamp(1.25rem, 3vw, 3rem);
+}
+
+@media (min-width: 1024px) {
+  .gutter {
+    padding-left: 5.5rem;
+  }
+}
+
+/** Panel: a printed block — hairline rule, no radius, optional crop marks. */
+@utility panel {
+  border: 1px solid var(--line);
+  background: var(--surface);
+}
+
+.cropped {
+  position: relative;
+}
+.cropped::before,
+.cropped::after {
+  content: '';
+  position: absolute;
+  width: 11px;
+  height: 11px;
+  border: 1px solid var(--accent);
+  pointer-events: none;
+}
+.cropped::before {
+  top: -1px;
+  left: -1px;
+  border-right: 0;
+  border-bottom: 0;
+}
+.cropped::after {
+  right: -1px;
+  bottom: -1px;
+  border-left: 0;
+  border-top: 0;
+}
+
+/** Dotted leader, as used between an item and its page number in an index. */
+.leader {
+  flex: 1;
+  height: 0.65em;
+  border-bottom: 1px dotted var(--line);
+}
+
+/** Engineering paper: faint ruled grid behind a section. */
+.grid-paper {
+  background-image: linear-gradient(to right, var(--line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--line) 1px, transparent 1px);
+  background-size: 5rem 5rem;
+}
+
+/** Halftone dots — the riso print tell. */
+.halftone {
+  background-image: radial-gradient(var(--accent) 1px, transparent 1px);
+  background-size: 6px 6px;
+}
+
+.grain::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 90;
+  opacity: var(--grain-opacity, 0.2);
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E");
+}
+[data-theme='blueprint'] .grain::after,
+[data-theme='darkroom'] .grain::after {
+  mix-blend-mode: screen;
+}
+
+/** Ink underline that draws itself on hover. */
+.ink-link {
+  background-image: linear-gradient(var(--accent), var(--accent));
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 0% 1px;
+  transition: background-size 0.5s var(--ease-out-expo);
+}
+.ink-link:hover {
+  background-size: 100% 1px;
+}
+
+@keyframes caret {
+  50% {
+    opacity: 0;
+  }
+}
+.caret {
+  animation: caret 1s steps(1) infinite;
+}
+
+/* ── Companion bot ────────────────────────────────────────────────── */
+.bot {
+  --size: 56px;
+  --bot-accent: var(--accent);
+  position: relative;
+  display: block;
+  width: var(--size);
+  height: calc(var(--size) * 1.22);
+  animation: bot-bob 4.6s ease-in-out infinite;
+}
+.bot-antenna {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 2px;
+  height: calc(var(--size) * 0.26);
+  background: var(--fg);
+  transform: translateX(-50%);
+  transform-origin: bottom center;
+}
+.bot-antenna::after {
+  content: '';
+  position: absolute;
+  top: calc(var(--size) * -0.09);
+  left: 50%;
+  width: calc(var(--size) * 0.16);
+  height: calc(var(--size) * 0.16);
+  border-radius: 50%;
+  background: var(--bot-accent);
+  transform: translateX(-50%);
+  transition: background 0.3s;
+}
+.bot-head {
+  position: absolute;
+  inset: auto 0 0 0;
+  height: var(--size);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: calc(var(--size) * 0.1);
+  background: var(--bg);
+  border: 1.5px solid var(--fg);
+  box-shadow: calc(var(--size) * 0.07) calc(var(--size) * 0.07) 0 var(--bot-accent);
+  transition: box-shadow 0.3s, transform 0.3s;
+}
+.bot-eye {
+  position: relative;
+  width: calc(var(--size) * 0.46);
+  height: calc(var(--size) * 0.46);
+  overflow: hidden;
+  border-radius: 50%;
+  background: var(--surface);
+  border: 1.5px solid var(--fg);
+  transition: height 0.25s, border-radius 0.25s;
+}
+.bot-pupil {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 44%;
+  height: 44%;
+  margin: -22% 0 0 -22%;
+  border-radius: 50%;
+  background: var(--fg);
+  transform: translate(calc(var(--look-x, 0) * 1px), calc(var(--look-y, 0) * 1px));
+}
+.bot-lid {
+  position: absolute;
+  inset: 0;
+  background: var(--bg);
+  transform: translateY(-101%);
+  transition: transform 0.12s ease-in;
+}
+.is-blink .bot-lid {
+  transform: translateY(-8%);
+}
+.bot-mouth {
+  width: calc(var(--size) * 0.22);
+  height: 2px;
+  background: var(--fg);
+  transition: all 0.25s;
+}
+.mood-idle {
+  --bot-accent: var(--muted);
+}
+.mood-curious .bot-antenna {
+  animation: antenna-wiggle 1.6s ease-in-out infinite;
+}
+.mood-excited .bot-head {
+  transform: translateY(-3px) rotate(-4deg);
+}
+.mood-excited .bot-mouth,
+.mood-success .bot-mouth {
+  width: calc(var(--size) * 0.3);
+  height: calc(var(--size) * 0.12);
+  border-radius: 0 0 99px 99px;
+}
+.mood-focused .bot-eye {
+  height: calc(var(--size) * 0.26);
+  border-radius: 40%;
+}
+.mood-thinking {
+  --bot-accent: var(--accent-2);
+}
+.mood-thinking .bot-pupil {
+  transform: translate(4px, -5px);
+}
+.mood-success,
+.mood-discovery {
+  --bot-accent: var(--accent-2);
+}
+.mood-success .bot-head,
+.mood-discovery .bot-head {
+  animation: bot-pop 0.6s var(--ease-out-expo);
+}
+.mood-farewell .bot-head {
+  transform: rotate(6deg);
+}
+.bot-sleep .bot-lid {
+  transform: translateY(-20%);
+}
+
+@keyframes bot-bob {
+  50% {
+    transform: translateY(-4px);
+  }
+}
+@keyframes antenna-wiggle {
+  25% {
+    transform: translateX(-50%) rotate(-12deg);
+  }
+  75% {
+    transform: translateX(-50%) rotate(12deg);
+  }
+}
+@keyframes bot-pop {
+  40% {
+    transform: scale(1.14) rotate(-6deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
