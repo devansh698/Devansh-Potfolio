@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { links } from '../data';
+import { useCompanion } from '../interaction/CompanionContext';
 import './Navbar.css';
 
 const navLinks = [
@@ -14,6 +15,7 @@ const navLinks = [
 export default function Navbar({ darkMode, setDarkMode }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const { soundOn, toggleSound } = useCompanion();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
@@ -44,6 +46,15 @@ export default function Navbar({ darkMode, setDarkMode }) {
         </div>
 
         <div className="nav-right">
+          <button
+            className="theme-btn"
+            onClick={toggleSound}
+            aria-label={soundOn ? 'Mute interaction sounds' : 'Enable interaction sounds'}
+            aria-pressed={soundOn}
+            title={soundOn ? 'Sound: on' : 'Sound: off'}
+          >
+            {soundOn ? '♪' : '∅'}
+          </button>
           <button className="theme-btn" onClick={() => setDarkMode(!darkMode)} aria-label="Toggle theme">
             {darkMode ? '◐' : '●'}
           </button>

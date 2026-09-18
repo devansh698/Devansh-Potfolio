@@ -1,43 +1,76 @@
 import { useState, useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useSpotlight } from '../hooks/useSpotlight';
+import { useTilt } from '../hooks/useTilt';
+import { useProximity } from '../hooks/useProximity';
+import { useCompanion } from '../interaction/CompanionContext';
+import { SCRIPT } from '../interaction/script';
+import { playTone } from '../interaction/tone';
 import { projects } from '../data';
 import './Projects.css';
 
 const CATS = ['All', 'MERN', 'Laravel', 'Web'];
 
-function StickyProjectCard({ p, i, total, progress }) {
+function StickyProjectCard({ p, i, total, progress, onOpen, onInterest }) {
   const spot = useSpotlight();
+  const tiltRef = useTilt({ max: 3.5 });
+  const proxRef = useProximity({ radius: 220 });
   const range = [i / total, Math.min((i + 1.4) / total, 1)];
   const scale = useTransform(progress, range, [1, 0.92]);
   const opacity = useTransform(progress, [range[0], range[1]], [1, i === total - 1 ? 1 : 0.45]);
 
+  // Tilt + proximity both live on the card element itself.
+  const setRefs = (el) => {
+    tiltRef.current = el;
+    proxRef.current = el;
+  };
+
   return (
     <div className="sticky-slot" style={{ top: `${6 + i * 2.6}rem` }}>
-      <motion.div
-        style={{ scale, opacity, '--card-rot': `${i % 2 ? 0.5 : -0.5}deg` }}
-        className="proj-card spotlight"
-        onMouseMove={spot}
-      >
-        <div className="proj-card-top">
-          <span className="proj-code">{p.code}</span>
-          <span className="proj-cat">{p.cat}</span>
-        </div>
-        <h3 className="proj-title">{p.title}</h3>
-        <span className="proj-sub">{p.sub}</span>
-        <span className="proj-period">{p.period}</span>
-        <p className="proj-desc">{p.desc}</p>
-        <div className="proj-tags">
-          {p.tech.map(t => <span key={t} className="tag">{t}</span>)}
-        </div>
-        <div className="proj-footer">
-          {p.gh !== '#' ? (
-            <a href={p.gh} target="_blank" rel="noopener noreferrer" className="proj-link">
-              <GithubIcon /> View Code
-            </a>
-          ) : (
-            <span className="proj-wip">In Development</span>
-          )}
+      <motion.div style={{ scale, opacity }} className="proj-slot-motion">
+        <div
+          ref={setRefs}
+          className="proj-card spotlight"
+          onMouseMove={spot}
+          onMouseEnter={() => onInterest(p.id)}
+          onClick={() => onOpen(p)}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              onOpen(p);
+            }
+          }}
+          role="button"
+          tabIndex={0}
+          aria-label={`Open ${p.title} case study`}
+        >
+          <span className="proj-explore" aria-hidden="true">EXPLORE ↳</span>
+          <div className="proj-card-top">
+            <span className="proj-code">{p.code}</span>
+            <span className="proj-cat">{p.cat}</span>
+          </div>
+          <h3 className="proj-title">{p.title}</h3>
+          <span className="proj-sub">{p.sub}</span>
+          <span className="proj-period">{p.period}</span>
+          <p className="proj-desc">{p.desc}</p>
+          <div className="proj-tags">
+            {p.tech.map(t => <span key={t} className="tag">{t}</span>)}
+          </div>
+          <div className="proj-footer">
+            {p.gh !== '#' ? (
+              <a
+                href={p.gh}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="proj-link"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <GithubIcon /> View Code
+              </a>
+            ) : (
+              <span className="proj-wip">In Development</span>
+            )}
+          </div>
         </div>
       </motion.div>
     </div>
@@ -47,12 +80,28 @@ function StickyProjectCard({ p, i, total, progress }) {
 export default function Projects() {
   const [active, setActive] = useState('All');
   const stackRef = useRef(null);
+  const interestRef = useRef({});
+  const { setStoryProject, say, setMood } = useCompanion();
   const { scrollYProgress } = useScroll({
     target: stackRef,
     offset: ['start start', 'end end'],
   });
 
   const filtered = active === 'All' ? projects : projects.filter(p => p.cat === active);
+
+  const handleOpen = (p) => {
+    playTone('open');
+    setStoryProject(p);
+  };
+
+  // The site noticing repeated attention on one project — once, gently.
+  const handleInterest = (id) => {
+    interestRef.current[id] = (interestRef.current[id] || 0) + 1;
+    if (interestRef.current[id] === 3) {
+      say(SCRIPT.projectInterest, { once: 'project-interest' });
+      setMood('curious', 2400);
+    }
+  };
 
   return (
     <section id="projects" className="sec projects-sec">
@@ -82,7 +131,15 @@ export default function Projects() {
         style={{ height: `${filtered.length * 60 + 60}vh` }}
       >
         {filtered.map((p, i) => (
-          <StickyProjectCard key={p.id} p={p} i={i} total={filtered.length} progress={scrollYProgress} />
+          <StickyProjectCard
+            key={p.id}
+            p={p}
+            i={i}
+            total={filtered.length}
+            progress={scrollYProgress}
+            onOpen={handleOpen}
+            onInterest={handleInterest}
+          />
         ))}
       </div>
     </section>

@@ -81,6 +81,49 @@ export const projects = [
   },
 ];
 
+/**
+ * Interactive case-study beats for the project story modal
+ * (PROBLEM → THINK → BUILD → RESULT), keyed by project id.
+ */
+export const projectStories = {
+  1: {
+    problem: 'Billing done by hand doesn\u2019t scale. Invoices pile up, subscriptions slip through, and the numbers stop matching reality.',
+    think: 'Split the domain into clean resources — invoices, subscriptions, payments — each behind its own REST endpoint, with one source of truth in MongoDB.',
+    build: ['mounting REST endpoints … ok', 'wiring invoice generator … ok', 'tracking subscriptions … ok', 'validating payloads … ok'],
+    result: 'A billing platform that generates invoices, tracks subscriptions, and keeps financial data consistent end to end.',
+  },
+  2: {
+    problem: 'Getting a doctor\u2019s appointment is a phone queue and a paper calendar. Patients wait; doctors double-book.',
+    think: 'Two-sided booking: doctors publish availability, patients book against it — plus an AI layer for preliminary health guidance before the visit.',
+    build: ['booting React UI … ok', 'appointment engine … ok', 'AI assist layer … ok', 'responsive pass … ok'],
+    result: 'A doctor–patient platform where booking takes seconds and preliminary guidance happens before the waiting room.',
+  },
+  3: {
+    problem: 'Large transaction sets choke naive dashboards — slow renders, frozen filters, users staring at spinners.',
+    think: 'Push the heavy lifting to the API, visualize aggregates, and hydrate detail only on demand so the UI stays light.',
+    build: ['aggregation endpoints … ok', 'chart pipeline … ok', 'large-dataset paths … ok'],
+    result: 'An analytics dashboard that stays smooth while slicing through large transaction datasets.',
+  },
+  4: {
+    problem: 'Property search collapses when the schema isn\u2019t built for filtering — every availability check becomes a slow table scan.',
+    think: 'Design the database around the queries: indexed search fields and availability modeled for fast, direct lookups.',
+    build: ['schema + indexes … ok', 'search endpoints … ok', 'booking flow … ok'],
+    result: 'Listing and booking flows with fast search and availability checks that don\u2019t make the visitor wait.',
+  },
+  5: {
+    problem: 'Task apps get abandoned when organizing the list is more work than doing the tasks.',
+    think: 'Priorities, due dates, categories and drag-and-drop reordering — all behind JWT auth so every list follows its owner.',
+    build: ['JWT auth … ok', 'task CRUD … ok', 'drag-and-drop reorder … ok'],
+    result: 'A task manager that stays out of the way — reorder with a drag, filter by what actually matters.',
+  },
+  6: {
+    problem: 'A coffee brand needs a fast, beautiful presence — not a heavyweight stack for a menu and a story.',
+    think: 'Static-first: plain HTML, CSS and JavaScript with dynamic menu filtering and a cart preview. No framework overhead.',
+    build: ['layout + typography … ok', 'menu filtering … ok', 'scroll animations … ok'],
+    result: 'A responsive brand site that loads instantly and still feels alive.',
+  },
+};
+
 export const experience = [
   {
     code: 'EXP-01',

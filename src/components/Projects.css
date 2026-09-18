@@ -43,18 +43,59 @@
   padding: 0 2.5rem;
 }
 
+.proj-slot-motion {
+  width: 100%;
+  max-width: 760px;
+  display: flex;
+  justify-content: center;
+}
+
 .proj-card {
+  position: relative;
   padding: 2.4rem;
   display: flex;
   flex-direction: column;
   gap: .5rem;
-  cursor: default;
+  cursor: pointer;
   width: 100%;
   max-width: 760px;
-  box-shadow: 0 30px 60px -20px rgba(0,0,0,.6), 0 0 0 1px var(--flameg);
+  /* Proximity-aware: --prox (0→1) is written by useProximity as the
+     cursor approaches, so the card glows before it's even touched. */
+  box-shadow:
+    0 30px 60px -20px rgba(0,0,0,.6),
+    0 0 0 1px var(--flameg),
+    0 0 calc(var(--prox, 0) * 38px) calc(var(--prox, 0) * 3px) var(--flameg);
+  transform: perspective(1000px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
+  transition: transform .18s ease-out, border-color .3s var(--ease);
 }
 
-.proj-card:hover { border-color: var(--flame) !important; }
+.proj-card:hover,
+.proj-card[data-near] { border-color: var(--flame) !important; }
+
+.proj-card:focus-visible {
+  outline: 3px dashed var(--flame);
+  outline-offset: 5px;
+}
+
+/* Label that fades in as the visitor approaches (§proximity) */
+.proj-explore {
+  position: absolute;
+  top: -0.85rem;
+  right: 1.6rem;
+  z-index: 2;
+  font-family: var(--fm);
+  font-size: .64rem;
+  font-weight: 700;
+  letter-spacing: .12em;
+  color: var(--bg);
+  background: var(--lime);
+  border: 2px solid var(--t);
+  border-radius: 100px;
+  padding: .25rem .7rem;
+  opacity: var(--prox, 0);
+  transform: translateY(calc((1 - var(--prox, 0)) * 6px)) rotate(2deg);
+  pointer-events: none;
+}
 
 .proj-card-top {
   display: flex;

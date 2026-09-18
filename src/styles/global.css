@@ -52,6 +52,9 @@ html.lenis.lenis-smooth { scroll-behavior: auto; }
 html.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
 html.lenis.lenis-stopped { overflow: hidden; }
 
+/* Interaction layer scroll lock (intro / terminal / project world) */
+html.dh-locked { overflow: hidden; }
+
 body {
   font-family: var(--fb);
   background: var(--bg);

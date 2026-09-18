@@ -36,6 +36,13 @@
   border-color: var(--flame);
 }
 
+.cur-ring.is-click {
+  width: 24px !important;
+  height: 24px !important;
+  border-color: var(--moss);
+  background: var(--mossg);
+}
+
 .cur-label {
   font-family: var(--fm);
   font-size: .6rem;

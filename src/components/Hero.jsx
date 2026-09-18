@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { links } from '../data';
 import { useSpotlight } from '../hooks/useSpotlight';
+import { useMagnetic } from '../hooks/useMagnetic';
 import './Hero.css';
 
 const WORDS = [
@@ -67,6 +68,7 @@ const fadeUp = {
 export default function Hero() {
   const typed = useTypewriter(WORDS);
   const spot = useSpotlight();
+  const magRef = useMagnetic();
   const heroRef = useRef(null);
   const { scrollYProgress } = useScroll({ target: heroRef, offset: ['start start', 'end start'] });
   const ghostY = useTransform(scrollYProgress, [0, 1], [0, 220]);
@@ -101,7 +103,9 @@ export default function Hero() {
         </motion.p>
 
         <motion.div className="hero-actions" initial="hidden" animate="show" custom={4} variants={fadeUp}>
-          <a href="#projects" className="btn-solid">View Work ↗</a>
+          <span ref={magRef}>
+            <a href="#projects" className="btn-solid">View Work ↗</a>
+          </span>
           <a href="#contact" className="btn-ghost">Get In Touch</a>
           <div className="socials">
             <a href={links.github} target="_blank" rel="noopener noreferrer" className="sc" title="GitHub"><GithubIcon /></a>

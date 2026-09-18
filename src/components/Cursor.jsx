@@ -7,6 +7,7 @@ const HOVER_SELECTOR = 'a, button, .proj-card, .cert-card, .skill-row, .stat-car
 export default function Cursor() {
   const [enabled, setEnabled] = useState(false);
   const [hovering, setHovering] = useState(false);
+  const [clicked, setClicked] = useState(false);
   const [label, setLabel] = useState('');
 
   const x = useMotionValue(-100);
@@ -39,8 +40,21 @@ export default function Cursor() {
       }
     };
 
+    // Every click gets acknowledged: the ring snaps in and springs back.
+    let clickTimer;
+    const onDown = () => {
+      setClicked(true);
+      clearTimeout(clickTimer);
+      clickTimer = setTimeout(() => setClicked(false), 240);
+    };
+
     window.addEventListener('mousemove', onMove, { passive: true });
-    return () => window.removeEventListener('mousemove', onMove);
+    window.addEventListener('pointerdown', onDown, { passive: true });
+    return () => {
+      window.removeEventListener('mousemove', onMove);
+      window.removeEventListener('pointerdown', onDown);
+      clearTimeout(clickTimer);
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -50,7 +64,7 @@ export default function Cursor() {
     <>
       <motion.div className="cur-dot" style={{ left: x, top: y }} />
       <motion.div
-        className={`cur-ring ${hovering ? 'is-hover' : ''}`}
+        className={`cur-ring ${hovering ? 'is-hover' : ''} ${clicked ? 'is-click' : ''}`}
         style={{ left: ringX, top: ringY }}
       >
         {label && <span className="cur-label">{label}</span>}

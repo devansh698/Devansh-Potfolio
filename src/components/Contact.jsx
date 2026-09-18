@@ -1,5 +1,8 @@
 import { useState, useRef } from 'react';
 import { useScrollReveal } from '../hooks/useScrollReveal';
+import { useCompanion } from '../interaction/CompanionContext';
+import { SCRIPT } from '../interaction/script';
+import { playTone } from '../interaction/tone';
 import { links } from '../data';
 import './Contact.css';
 
@@ -8,7 +11,19 @@ export default function Contact() {
   const [status, setStatus] = useState('idle'); // idle | sending | sent
   const [error, setError] = useState('');
   const ref = useRef(null);
+  const { glideTo, say, setTldrOpen, celebrate } = useCompanion();
   useScrollReveal(ref);
+
+  const handleStartOver = () => {
+    playTone('open');
+    say(SCRIPT.startOver);
+    glideTo('#home', { duration: 2.2 });
+  };
+
+  const handleQuickPortfolio = () => {
+    playTone('open');
+    setTldrOpen(true);
+  };
 
   const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
@@ -50,6 +65,7 @@ export default function Contact() {
 
       setStatus('sent');
       setForm({ name: '', email: '', message: '' });
+      celebrate('success');
     } catch (err) {
       setStatus('idle');
       setError(`Unable to send right now. Please email ${links.email}.`);
@@ -134,6 +150,16 @@ export default function Contact() {
                 </button>
               </form>
             )}
+          </div>
+        </div>
+
+        {/* The proper ending — acknowledged, never abrupt. */}
+        <div className="farewell-row sr-up">
+          <span className="farewell-eof">{'// END OF TOUR'}</span>
+          <div className="farewell-actions">
+            <a href={`mailto:${links.email}`} className="btn-solid">Contact Me</a>
+            <button type="button" className="btn-ghost" onClick={handleStartOver}>Start Over</button>
+            <button type="button" className="btn-ghost" onClick={handleQuickPortfolio}>Quick Portfolio</button>
           </div>
         </div>
       </div>

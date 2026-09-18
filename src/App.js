@@ -15,6 +15,37 @@ import Footer from './components/Footer';
 import Backdrop from './components/Backdrop';
 import Cursor from './components/Cursor';
 
+import { CompanionProvider, useCompanion } from './interaction/CompanionContext';
+import Companion from './interaction/Companion';
+import Intro from './interaction/Intro';
+import Terminal from './interaction/Terminal';
+import ProjectStory from './interaction/ProjectStory';
+import TldrSheet from './interaction/TldrSheet';
+import { useSectionSense, useScrollSense, useIdleSense } from './interaction/senses';
+
+/**
+ * Everything that makes the site feel inhabited: the companion, the
+ * first-contact intro, the senses (sections / scroll / idle) and the
+ * hidden layers. Lives inside the provider so it can all share one brain.
+ */
+function InteractionLayer() {
+  const { introDone } = useCompanion();
+
+  useSectionSense();
+  useScrollSense();
+  useIdleSense();
+
+  return (
+    <>
+      {!introDone && <Intro />}
+      <Companion />
+      <Terminal />
+      <ProjectStory />
+      <TldrSheet />
+    </>
+  );
+}
+
 export default function App() {
   const [darkMode, setDarkMode] = useState(true);
   const [scrollPct, setScrollPct] = useState(0);
@@ -60,23 +91,26 @@ export default function App() {
   }, []);
 
   return (
-    <div className={darkMode ? 'dark-mode' : 'light-mode'}>
-      <Backdrop />
-      <Cursor />
+    <CompanionProvider lenisRef={lenisRef}>
+      <div className={darkMode ? 'dark-mode' : 'light-mode'}>
+        <Backdrop />
+        <Cursor />
 
-      {/* Progress bar */}
-      <div className="progress-bar" style={{ width: `${scrollPct}%` }} />
+        {/* Progress bar */}
+        <div className="progress-bar" style={{ width: `${scrollPct}%` }} />
 
-      <Navbar darkMode={darkMode} setDarkMode={setDarkMode} />
-      <Hero />
-      <About />
-      <Skills />
-      <Projects />
-      <Experience />
-      <Certs />
-      <Contact />
-      <Footer />
-    </div>
+        <Navbar darkMode={darkMode} setDarkMode={setDarkMode} />
+        <Hero />
+        <About />
+        <Skills />
+        <Projects />
+        <Experience />
+        <Certs />
+        <Contact />
+        <Footer />
+
+        <InteractionLayer />
+      </div>
+    </CompanionProvider>
   );
 }
-
