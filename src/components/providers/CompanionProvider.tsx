@@ -208,6 +208,8 @@ export function CompanionProvider({ children }: { children: ReactNode }) {
     if (!lenis) return;
     if (isLocked) lenis.stop();
     else lenis.start();
+    // Lenis outlives this provider (it lives in the root layout), so never leave it stopped on navigation away.
+    return () => lenis.start();
   }, [lenis, isLocked]);
 
   const glideTo = useCallback(

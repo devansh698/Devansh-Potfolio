@@ -1,6 +1,7 @@
 'use client';
 
 import { useMemo, useRef, useState, type PointerEvent } from 'react';
+import Link from 'next/link';
 import { AnimatePresence, LayoutGroup, motion, useInView, useMotionValue, useSpring } from 'framer-motion';
 import SectionHeading from '@/components/ui/SectionHeading';
 import ProjectCover from '@/components/ui/ProjectCover';
@@ -11,6 +12,7 @@ import { SCRIPT } from '@/lib/interaction/script';
 import { playTone } from '@/lib/interaction/tone';
 import { spotlight } from '@/lib/spotlight';
 import { projectFilters, projects, type Project, type ProjectFilter } from '@/lib/data';
+import { projectPath } from '@/lib/site';
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 type View = 'ring' | 'list' | 'grid';
@@ -215,6 +217,17 @@ export default function Work() {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Plain links to each case-study page: the interactive views open a modal,
+          so this index is what gives crawlers (and no-JS readers) a path to every project. */}
+      <nav aria-label="Project case studies" className="mt-10 flex flex-wrap items-baseline gap-x-4 gap-y-2 border-t border-line pt-5">
+        <span className="label text-muted">Case files</span>
+        {projects.map((p) => (
+          <Link key={p.id} href={projectPath(p)} className="label text-muted underline-offset-4 hover:text-accent hover:underline">
+            {p.title}
+          </Link>
+        ))}
+      </nav>
 
       {/* Cursor-follow preview, pointer devices only. */}
       <motion.div

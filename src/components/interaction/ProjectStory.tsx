@@ -7,6 +7,7 @@ import Modal, { CloseButton } from '@/components/ui/Modal';
 import { SCRIPT } from '@/lib/interaction/script';
 import { playTone } from '@/lib/interaction/tone';
 import { projects, type Project } from '@/lib/data';
+import { projectPath } from '@/lib/site';
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 const STAGES = ['Problem', 'Think', 'Build', 'Result'] as const;
@@ -182,7 +183,10 @@ function Story({ project }: { project: Project }) {
                     </span>
                   ))}
                 </div>
-                <div className="mt-6">
+                <div className="mt-6 flex flex-wrap items-center gap-4">
+                  <a href={projectPath(project)} className="label border border-line px-4 py-3 hover:bg-fg hover:text-bg">
+                    Full case study →
+                  </a>
                   {project.repo ? (
                     <a
                       href={project.repo}

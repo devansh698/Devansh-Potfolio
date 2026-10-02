@@ -1,4 +1,9 @@
+import type { Metadata } from 'next';
 import Nav from '@/components/Nav';
+import JsonLd from '@/components/seo/JsonLd';
+import { CompanionProvider } from '@/components/providers/CompanionProvider';
+import { homeJsonLd } from '@/lib/seo/structured-data';
+import { llmsAlternateTypes } from '@/lib/site';
 import Hero from '@/components/sections/Hero';
 import Marquee from '@/components/sections/Marquee';
 import About from '@/components/sections/About';
@@ -17,9 +22,16 @@ import Senses from '@/components/interaction/Senses';
 import Cursor from '@/components/interaction/Cursor';
 import SoundDriver from '@/components/interaction/SoundDriver';
 
+export const metadata: Metadata = {
+  alternates: { canonical: '/', types: llmsAlternateTypes },
+};
+
+// The companion layer (preloader, intro, scroll lock) belongs to the home page only;
+// standalone project pages must scroll freely without it.
 export default function Home() {
   return (
-    <>
+    <CompanionProvider>
+      <JsonLd data={homeJsonLd()} />
       <Preloader />
       <Intro />
       <Nav />
@@ -40,6 +52,6 @@ export default function Home() {
       <Senses />
       <Cursor />
       <SoundDriver />
-    </>
+    </CompanionProvider>
   );
 }

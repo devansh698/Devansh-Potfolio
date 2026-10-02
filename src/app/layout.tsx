@@ -2,7 +2,8 @@ import type { Metadata, Viewport } from 'next';
 import { Archivo, Instrument_Serif, JetBrains_Mono } from 'next/font/google';
 import SmoothScroll from '@/components/providers/SmoothScroll';
 import { ThemeProvider, themeBootScript } from '@/components/providers/ThemeProvider';
-import { CompanionProvider } from '@/components/providers/CompanionProvider';
+import { SITE_URL, site } from '@/lib/site';
+import { profile } from '@/lib/data';
 import './globals.css';
 
 const archivo = Archivo({
@@ -26,18 +27,48 @@ const mono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'Devansh Handa — Software Engineer',
-  description:
-    'Full-stack software engineer building production CRM systems with Laravel, MERN, REST APIs and real-time WebSockets.',
+  metadataBase: new URL(SITE_URL),
+  title: { default: site.title, template: site.titleTemplate },
+  description: site.description,
+  applicationName: site.name,
+  keywords: [...site.keywords],
+  authors: [{ name: profile.name, url: SITE_URL }],
+  creator: profile.name,
+  publisher: profile.name,
+  category: 'technology',
   openGraph: {
-    title: 'Devansh Handa — Software Engineer',
-    description: 'Laravel · MERN · REST APIs · Real-time systems.',
-    type: 'website',
+    type: 'profile',
+    siteName: site.name,
+    locale: site.locale,
+    title: site.title,
+    description: site.description,
+    url: '/',
+    firstName: profile.firstName,
+    lastName: profile.lastName,
   },
+  twitter: {
+    card: 'summary_large_image',
+    title: site.title,
+    description: site.description,
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, 'max-image-preview': 'large', 'max-snippet': -1, 'max-video-preview': -1 },
+  },
+  formatDetection: { telephone: false, email: false, address: false },
+  ...(process.env.GOOGLE_SITE_VERIFICATION || process.env.BING_SITE_VERIFICATION
+    ? {
+        verification: {
+          ...(process.env.GOOGLE_SITE_VERIFICATION ? { google: process.env.GOOGLE_SITE_VERIFICATION } : {}),
+          ...(process.env.BING_SITE_VERIFICATION ? { other: { 'msvalidate.01': process.env.BING_SITE_VERIFICATION } } : {}),
+        },
+      }
+    : {}),
 };
 
 export const viewport: Viewport = {
-  themeColor: '#f2eee3',
+  themeColor: site.themeColor,
 };
 
 export default function RootLayout({ children }: LayoutProps<'/'>) {
@@ -48,9 +79,7 @@ export default function RootLayout({ children }: LayoutProps<'/'>) {
       </head>
       <body className="grain">
         <ThemeProvider>
-          <SmoothScroll>
-            <CompanionProvider>{children}</CompanionProvider>
-          </SmoothScroll>
+          <SmoothScroll>{children}</SmoothScroll>
         </ThemeProvider>
       </body>
     </html>
