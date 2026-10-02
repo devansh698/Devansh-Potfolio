@@ -74,12 +74,10 @@ export default function Experience() {
 
         {roles.map((role) => (
           <article key={role.code} data-exp-card className="gutter relative flex flex-col overflow-hidden border-t border-line py-14 lg:w-[48vw] lg:justify-center lg:border-l lg:border-t-0 lg:px-12 lg:py-24">
-            <span data-exp-num aria-hidden="true" className="display pointer-events-none absolute -bottom-8 right-0 select-none text-[clamp(8rem,18vw,18rem)] leading-none text-fg/[0.04]">
-              {role.code.slice(-2)}
-            </span>
+            <span data-exp-num aria-hidden="true" className="display pointer-events-none absolute -bottom-8 right-0 select-none text-[clamp(8rem,18vw,18rem)] leading-none text-fg/[0.04]" data-deco-text={role.code.slice(-2)} />
             <div data-exp-inner>
             <div data-exp-reveal className="flex items-baseline justify-between">
-              <span className="label bg-accent px-3 py-1 text-on-accent">{role.period}</span>
+              <span className="label rounded-full border border-line px-3 py-1.5 text-fg">{role.period}</span>
               <span className="label text-muted">{role.code}</span>
             </div>
             <h3 data-exp-reveal className="display pt-10 text-[clamp(2rem,3.6vw,3.6rem)] font-bold uppercase leading-[0.9]">

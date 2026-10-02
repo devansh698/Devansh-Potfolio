@@ -18,50 +18,73 @@ const EASE = [0.16, 1, 0.3, 1] as const;
 type View = 'ring' | 'list' | 'grid';
 const VIEW_LABEL: Record<View, string> = { ring: '◎ 3D', list: '☰ List', grid: '▦ Grid' };
 
+/** Small outbound chip for a project's deployment; sits above stretched card buttons. */
+function LiveLink({ project, className = '' }: { project: Project; className?: string }) {
+  if (!project.live) return null;
+  return (
+    <a
+      href={project.live}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label={`Visit ${project.title} live site (opens in a new tab)`}
+      data-cursor="Visit"
+      className={`label z-10 items-center gap-1.5 rounded-full border border-line bg-bg px-3 py-1.5 transition-colors hover:border-fg hover:bg-fg hover:text-bg ${className}`}
+    >
+      <span aria-hidden="true" className="size-1.5 rounded-full bg-[#2bb673]" />
+      Live ↗
+    </a>
+  );
+}
+
 function TiltCard({ project, onOpen }: { project: Project; onOpen: () => void }) {
   const rx = useSpring(0, { stiffness: 200, damping: 18 });
   const ry = useSpring(0, { stiffness: 200, damping: 18 });
 
-  const onMove = (e: PointerEvent<HTMLButtonElement>) => {
+  const onMove = (e: PointerEvent<HTMLElement>) => {
     spotlight(e);
     const r = e.currentTarget.getBoundingClientRect();
-    ry.set(((e.clientX - r.left) / r.width - 0.5) * 12);
-    rx.set(((e.clientY - r.top) / r.height - 0.5) * -12);
+    ry.set(((e.clientX - r.left) / r.width - 0.5) * 10);
+    rx.set(((e.clientY - r.top) / r.height - 0.5) * -10);
   };
 
   return (
-    <motion.button
-      type="button"
-      onClick={onOpen}
+    <motion.article
       onPointerMove={onMove}
       onPointerLeave={() => {
         rx.set(0);
         ry.set(0);
       }}
-      data-cursor="Open"
       style={{ rotateX: rx, rotateY: ry, transformPerspective: 900 }}
-      className="spotlight group flex h-full flex-col overflow-hidden border border-line bg-surface text-left"
+      className="spotlight group relative flex h-full flex-col overflow-hidden border border-line bg-surface text-left transition-colors hover:border-fg/40"
     >
       <div className="aspect-[16/10] overflow-hidden">
-        <div className="h-full transition-transform duration-700 ease-out-expo group-hover:scale-105">
-          <ProjectCover project={project} />
+        <div className="h-full transition-transform duration-700 ease-out-expo group-hover:scale-[1.04]">
+          <ProjectCover project={project} isCompact />
         </div>
       </div>
       <div className="flex flex-1 flex-col gap-3 p-5">
         <div className="flex items-baseline justify-between gap-3">
-          <h3 className="text-xl font-bold">{project.title}</h3>
+          <h3 className="text-xl font-bold">
+            {/* Stretched button: the whole card opens the case study, the live chip stays its own link. */}
+            <button type="button" onClick={onOpen} data-cursor="Open" className="text-left after:absolute after:inset-0 after:content-['']">
+              {project.title}
+            </button>
+          </h3>
           <span className="label text-muted">{project.category}</span>
         </div>
         <p className="text-sm leading-relaxed text-muted">{project.desc}</p>
-        <div className="mt-auto flex flex-wrap gap-1.5 pt-2">
-          {project.stack.map((t) => (
-            <span key={t} className="border border-line px-2.5 py-0.5 text-xs">
-              {t}
-            </span>
-          ))}
+        <div className="mt-auto flex flex-wrap items-end justify-between gap-3 pt-2">
+          <div className="flex flex-wrap gap-1.5">
+            {project.stack.slice(0, 3).map((t) => (
+              <span key={t} className="border border-line px-2.5 py-0.5 text-xs">
+                {t}
+              </span>
+            ))}
+          </div>
+          <LiveLink project={project} className="relative inline-flex" />
         </div>
       </div>
-    </motion.button>
+    </motion.article>
   );
 }
 
@@ -130,17 +153,17 @@ export default function Work() {
                     playTone('tap');
                     setFilter(f);
                   }}
-                  className={`relative isolate border border-line px-4 py-2 text-sm font-semibold transition-colors ${isActive ? 'text-on-accent' : 'hover:border-accent'}`}
+                  className="chip relative isolate"
                 >
-                  {isActive && <motion.span layoutId="work-filter-pill" className="absolute inset-0 -z-10 bg-accent" />}
-                  {f} <span className="opacity-60">({count})</span>
+                  {isActive && <motion.span layoutId="work-filter-pill" className="absolute inset-0 -z-10 rounded-full bg-fg" />}
+                  {f} <span className="font-mono text-[0.7rem] opacity-60">{String(count).padStart(2, '0')}</span>
                 </button>
               );
             })}
           </div>
         </LayoutGroup>
 
-        <div role="radiogroup" aria-label="Layout" className="flex border border-line p-1">
+        <div role="radiogroup" aria-label="Layout" className="flex rounded-full border border-line p-1">
           {(isReducedMotion ? (['list', 'grid'] as const) : (['ring', 'list', 'grid'] as const)).map((v) => (
             <button
               key={v}
@@ -151,7 +174,7 @@ export default function Work() {
                 playTone('tap');
                 setView(v);
               }}
-              className={`label px-3 py-1.5 transition-colors ${view === v ? 'bg-fg text-bg' : 'text-muted hover:text-fg'}`}
+              className={`label rounded-full px-3.5 py-1.5 transition-colors ${view === v ? 'bg-fg text-bg' : 'text-muted hover:text-fg'}`}
             >
               {VIEW_LABEL[v]}
             </button>
@@ -177,14 +200,14 @@ export default function Work() {
               {visible.map((project) => {
                 const isDimmed = hovered !== null && hovered.id !== project.id;
                 return (
-                  <motion.li key={project.id} layout initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, x: -40 }} transition={{ duration: 0.45, ease: EASE }} className="border-b border-line">
+                  <motion.li key={project.id} layout initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, x: -40 }} transition={{ duration: 0.45, ease: EASE }} className="relative border-b border-line">
                     <button
                       type="button"
                       onClick={() => open(project)}
                       onPointerEnter={() => noticeInterest(project)}
                       onFocus={() => setHovered(project)}
                       data-cursor="Explore"
-                      className="group grid w-full grid-cols-[3.5rem_1fr_auto] items-center gap-4 py-6 text-left transition-opacity duration-500 md:grid-cols-[5rem_1.8fr_1fr_5rem_3rem] md:py-8"
+                      className="group grid w-full grid-cols-[3.5rem_1fr_auto] items-center gap-4 py-6 text-left transition-opacity duration-500 md:grid-cols-[5rem_1.8fr_1fr_5rem_6rem_3rem] md:py-8"
                       style={{ opacity: isDimmed ? 0.35 : 1 }}
                     >
                       <span className="label text-muted">{project.code}</span>
@@ -196,10 +219,13 @@ export default function Work() {
                       </span>
                       <span className="hidden text-muted md:block">{project.kind}</span>
                       <span className="label hidden text-muted md:block">{project.year}</span>
+                      {/* Placeholder cell: the live link is a sibling (no links inside buttons) laid over this column. */}
+                      <span aria-hidden="true" className="hidden md:block" />
                       <span aria-hidden="true" className="grid size-10 place-items-center border border-line text-lg transition-all duration-500 group-hover:rotate-45 group-hover:border-accent group-hover:bg-accent group-hover:text-on-accent">
                         ↗
                       </span>
                     </button>
+                    <LiveLink project={project} className="absolute right-[4.5rem] top-1/2 hidden -translate-y-1/2 md:inline-flex" />
                   </motion.li>
                 );
               })}
@@ -247,7 +273,7 @@ export default function Work() {
               exit={{ opacity: 0 }}
               transition={{ duration: 0.5, ease: EASE }}
             >
-              <ProjectCover project={hovered} />
+              <ProjectCover project={hovered} isCompact isLiveEnabled={false} sizes="20rem" />
             </motion.div>
           )}
         </AnimatePresence>

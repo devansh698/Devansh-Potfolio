@@ -117,7 +117,7 @@ function Shell() {
         );
         return;
       case 'about':
-        push(make('out', `${profile.name} — ${profile.role} at ${profile.company}.`), make('out', 'Intern → full-time in a year. Ships MERN + Laravel in production.'));
+        push(make('out', `${profile.name} — ${profile.role} at ${profile.company}.`), make('out', 'Intern → full-time in a year. Claude Certified Developer, building LLM features into production apps.'));
         return;
       case 'whoami':
         push(make('out', visitorName ? `${visitorName} — good to see you.` : "guest — try 'name <yours>'."));

@@ -25,25 +25,27 @@ export const CONTENT_UPDATED_AT = '2026-10-02';
 export const site = {
   name: `${profile.name} — Portfolio`,
   shortName: profile.initials,
-  title: `${profile.name} — Software Engineer · Laravel & MERN`,
+  title: `${profile.name} — Software Engineer · Generative AI & LLM Apps`,
   titleTemplate: `%s · ${profile.name}`,
   description:
-    'Devansh Handa is a full-stack software engineer in Haryana, India, building production CRM systems with Laravel, MERN, REST APIs and real-time WebSockets.',
-  ogTagline: 'Full-stack engineer · Laravel · MERN · REST APIs · Real-time systems',
+    'Devansh Handa is a software engineer and Claude Certified Developer in Haryana, India, building Generative AI and LLM features into production apps with React, Node.js and Python.',
+  ogTagline: 'Software engineer · Generative AI · LLM apps · Claude Certified Developer',
   locale: 'en_IN',
   language: 'en',
-  themeColor: '#f2eee3',
+  themeColor: '#f3f0e8',
   keywords: [
     'Devansh Handa',
     'Software Engineer',
+    'Generative AI Engineer',
+    'AI Engineer',
+    'LLM Developer',
+    'Claude Certified Developer',
+    'Prompt Engineering',
     'Full-Stack Developer',
-    'Laravel Developer',
-    'MERN Stack Developer',
     'React Developer',
     'Node.js',
     'REST API',
     'WebSockets',
-    'CRM Development',
     'Haryana',
     'India',
     'Portfolio',
@@ -72,4 +74,11 @@ export function findProject(slug: string): Project | undefined {
 export function projectDescription(project: Project): string {
   const text = `${project.title} — ${project.kind}. ${project.desc}`;
   return text.length <= 160 ? text : `${text.slice(0, 157).trimEnd()}…`;
+}
+
+/** Short, readable form of a live URL for chips and browser frames: host plus first path segment. */
+export function liveLabel(url: string): string {
+  const { hostname, pathname } = new URL(url);
+  const first = pathname.split('/').filter(Boolean)[0];
+  return first ? `${hostname}/${first}` : hostname;
 }

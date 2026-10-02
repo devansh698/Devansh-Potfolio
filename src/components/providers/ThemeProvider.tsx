@@ -10,7 +10,7 @@ export interface ThemeDef {
 }
 
 export const THEMES = {
-  press: { id: 'press', label: 'Press', palette: { bg: '#f2eee3', surface: '#ded7c4', fg: '#15120e', accent: '#2b44e0', accent2: '#e0452b' } },
+  press: { id: 'press', label: 'Press', palette: { bg: '#f3f0e8', surface: '#e0dbcd', fg: '#131210', accent: '#2638c9', accent2: '#d9472b' } },
   blueprint: { id: 'blueprint', label: 'Blueprint', palette: { bg: '#091320', surface: '#17293b', fg: '#e7f1f7', accent: '#ff6a3d', accent2: '#63e2ff' } },
   darkroom: { id: 'darkroom', label: 'Darkroom', palette: { bg: '#131010', surface: '#272120', fg: '#f0e7da', accent: '#e4572e', accent2: '#c9b27c' } },
 } as const satisfies Record<string, ThemeDef>;

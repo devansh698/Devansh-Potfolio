@@ -20,7 +20,7 @@ interface FormState {
 const EMPTY: FormState = { name: '', email: '', message: '' };
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 const LIMITS = { name: 80, email: 120, message: 2000 } as const;
-const PROMPTS = ['I’m hiring for a backend role…', 'We need a Laravel + Vue build…', 'Loved the desk. Let’s chat…'] as const;
+const PROMPTS = ['We want to add an LLM feature…', 'We’re hiring for an AI Engineer role…', 'Loved the desk. Let’s chat…'] as const;
 
 function validate(form: FormState): Partial<Record<keyof FormState, string>> {
   const errors: Partial<Record<keyof FormState, string>> = {};
@@ -47,7 +47,8 @@ export default function Contact() {
     () => {
       const mm = gsap.matchMedia();
       mm.add('(prefers-reduced-motion: no-preference)', () => {
-        const split = SplitText.create('[data-cta-line]', { type: 'chars' });
+        // Split the <h2> (not its spans) so SplitText's aria-label lands where it's permitted.
+        const split = SplitText.create('#contact-title', { type: 'chars' });
         gsap.from(split.chars, {
           x: () => gsap.utils.random(-500, 500),
           y: () => gsap.utils.random(-300, 300),
@@ -143,12 +144,12 @@ export default function Contact() {
         </p>
         <h2 id="contact-title" className="display text-[clamp(2.6rem,10.8vw,12rem)] leading-[0.8]">
           <span className="block">
-            <span data-cta-line className="block">
+            <span className="block">
               Let&apos;s build
             </span>
-          </span>
+          </span>{' '}
           <span className="block">
-            <span data-cta-line className="block text-accent">
+            <span className="block text-accent">
               something
             </span>
           </span>
@@ -157,14 +158,15 @@ export default function Contact() {
 
       <div className="relative mt-16 grid gap-16 md:grid-cols-12">
         <div className="md:col-span-5">
-          <p className="max-w-[36ch] text-lg text-muted">Open to backend & full-stack roles. Got a project, an opening, or just want to talk shop — my inbox is open. I reply fast.</p>
+          <p className="max-w-[36ch] text-lg text-muted">Open to AI Engineer & full-stack roles. Got a project, an opening, or just want to talk shop — my inbox is open. I reply fast.</p>
           <div className="mt-10 flex flex-wrap items-center gap-3">
             <Magnetic>
-              <a href={`mailto:${profile.email}`} data-cursor="Write" className="inline-flex h-14 items-center bg-accent px-7 text-lg font-semibold text-on-accent">
+              <a href={`mailto:${profile.email}`} data-cursor="Write" className="btn btn-solid h-14 text-base">
                 {profile.email}
+                <span className="btn-arrow" aria-hidden="true"><span>→</span></span>
               </a>
             </Magnetic>
-            <button type="button" onClick={copyEmail} className="h-14 border border-line px-5 font-semibold transition-colors hover:bg-fg hover:text-bg" aria-live="polite">
+            <button type="button" onClick={copyEmail} className="btn btn-ghost h-14" aria-live="polite">
               {isCopied ? 'Copied ✓' : 'Copy'}
             </button>
           </div>
@@ -307,9 +309,10 @@ export default function Contact() {
                       type="submit"
                       disabled={isSending}
                       data-cursor="Send"
-                      className="h-14 bg-fg px-8 font-semibold uppercase text-bg transition-colors hover:bg-accent hover:text-on-accent disabled:cursor-wait disabled:opacity-60"
+                      className="btn btn-solid h-14 disabled:cursor-wait disabled:opacity-60"
                     >
-                      {isSending ? 'Sending…' : 'Send message →'}
+                      {isSending ? 'Sending…' : 'Send message'}
+                      <span className="btn-arrow" aria-hidden="true"><span>→</span></span>
                     </button>
                   </Magnetic>
                 </div>
@@ -344,9 +347,7 @@ function Footer() {
 
   return (
     <footer className="relative mt-[clamp(5rem,10vw,9rem)] border-t border-line py-6">
-      <p aria-hidden="true" className="display pointer-events-none select-none text-center text-[clamp(3rem,17vw,19rem)] leading-[0.8] text-fg/[0.05]">
-        {profile.name}
-      </p>
+      <p aria-hidden="true" className="display pointer-events-none select-none text-center text-[clamp(3rem,17vw,19rem)] leading-[0.8] text-fg/[0.05]" data-deco-text={profile.name} />
       <div className="mt-6 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <p className="label text-muted">
           © {new Date().getFullYear()} {profile.name} · Built with Next.js, GSAP & Three.js

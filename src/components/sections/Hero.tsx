@@ -136,10 +136,10 @@ export default function Hero() {
         <div aria-hidden="true" className="pointer-events-none absolute -right-40 top-10 size-[48rem] opacity-25 blur-3xl" style={{ background: 'radial-gradient(circle, var(--accent-2), transparent 65%)' }} />
 
         <div data-cursor={hovered ? OBJECT_LABEL[hovered] : undefined} className="absolute inset-0" style={{ cursor: hovered ? 'pointer' : undefined }}>
-          <DeskScene isReady={isReady} palette={theme.palette} pulses={pulses} onHover={setHovered} onActivate={activate} progress={progress} />
+          {isReady && <DeskScene isReady={isReady} palette={theme.palette} pulses={pulses} onHover={setHovered} onActivate={activate} progress={progress} />}
         </div>
 
-        <div data-hero-copy className="pointer-events-none relative max-w-[34ch]">
+        <div data-hero-copy className="pointer-events-none relative max-w-[36ch]">
           <p data-hero-fade className="label mb-5 flex items-center gap-2 border-b border-line pb-2 text-muted">
             <span className="size-1.5 bg-accent" />
             {visitorName ? `Hey ${visitorName} — open to new roles` : 'Vol. 01 · Open to new roles'}
@@ -157,23 +157,24 @@ export default function Hero() {
           <p data-hero-fade className="mt-5 hidden max-w-[32ch] text-[0.95rem] leading-relaxed text-muted sm:block">
             {profile.intro}
           </p>
-          <div data-hero-fade className="pointer-events-auto mt-7 flex flex-wrap items-center gap-2">
+          <div data-hero-fade className="pointer-events-auto mt-7 flex w-max flex-wrap items-center gap-2.5">
             <Magnetic>
               <button
                 type="button"
                 data-cursor="Explore"
                 onClick={() => glideTo('#work')}
-                className="cropped border border-accent bg-accent px-6 py-3 text-sm font-semibold uppercase tracking-[0.12em] text-on-accent"
+                className="btn btn-solid"
               >
-                See the work ↗
+                See the work
+                <span className="btn-arrow" aria-hidden="true"><span>→</span></span>
               </button>
             </Magnetic>
             <button
               type="button"
               onClick={() => glideTo('#contact')}
-              className="border border-line px-6 py-3 text-sm font-semibold uppercase tracking-[0.12em] transition-colors hover:bg-fg hover:text-bg"
+              className="btn btn-ghost bg-bg/60 backdrop-blur-sm"
             >
-              Commission me
+              Get in touch
             </button>
           </div>
         </div>

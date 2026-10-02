@@ -9,7 +9,8 @@ import { CONTENT_UPDATED_AT, absoluteUrl, projectPath, site } from '@/lib/site';
 
 const credentialLine = (c: Credential) => `- [${c.title}](${c.url}) — ${c.org}${c.date ? `, ${c.date}` : ''}`;
 
-const projectLink = (p: Project) => `- [${p.title}](${absoluteUrl(projectPath(p))}): ${p.kind} (${p.year}). ${p.desc}`;
+const projectLink = (p: Project) =>
+  `- [${p.title}](${absoluteUrl(projectPath(p))}): ${p.kind} (${p.year}). ${p.desc}${p.live ? ` Live: ${p.live}` : ''}`;
 
 function header(): string[] {
   return [
@@ -61,6 +62,7 @@ export function buildLlmsFullTxt(): string {
     `- URL: ${absoluteUrl(projectPath(p))}`,
     `- Period: ${p.period}`,
     `- Stack: ${p.stack.join(', ')}`,
+    ...(p.live ? [`- Live: ${p.live}`] : []),
     `- Source: ${p.repo ?? 'Private / in development'}`,
     '',
     p.desc,
@@ -73,6 +75,20 @@ export function buildLlmsFullTxt(): string {
     '',
     `**Outcome.** ${p.result}`,
     '',
+    ...(p.feature
+      ? [
+          `**Role.** ${p.feature.role}`,
+          '',
+          `**Note.** ${p.feature.note}`,
+          '',
+          '**Features.**',
+          ...p.feature.features.map((f) => `- ${f.title}: ${f.body}`),
+          '',
+          '**Engineering highlights.**',
+          ...p.feature.highlights.map((h) => `- ${h.title}: ${h.body}`),
+          '',
+        ]
+      : []),
   ]);
 
   return [

@@ -7,7 +7,7 @@ import TechSphere from '@/components/sections/TechSphere';
 import { playTone } from '@/lib/interaction/tone';
 import { projects, skillGroups, skills, ticker, type SkillGroup } from '@/lib/data';
 
-const SPHERE_WORDS = [...ticker, 'TypeScript', 'Vue', 'Inertia', 'Tailwind', 'Python', 'Docker', 'Git', 'PHP', 'LLMs', 'SQL', 'Express', 'Three.js'];
+const SPHERE_WORDS = [...ticker, 'TypeScript', 'Tailwind', 'Flask', 'Docker', 'Git', 'SQL', 'Express', 'Three.js'];
 
 type Filter = 'All' | SkillGroup;
 const FILTERS: Filter[] = ['All', ...skillGroups];
@@ -19,6 +19,10 @@ const PROOF_KEYS: Record<string, string[]> = {
   'MongoDB / MySQL': ['MongoDB'],
   'REST APIs / JWT': ['JWT', 'Express'],
   'JavaScript / SQL': ['JavaScript', 'React'],
+  'Next.js': ['Next.js'],
+  'WebSockets / Redis': ['Redis'],
+  'LLM Integration (Claude API)': ['LLM', 'LLM tool use'],
+  'Prompt Engineering': ['Prompt Engineering', 'LLM tool use'],
 };
 
 export default function Skills() {
@@ -73,9 +77,9 @@ export default function Skills() {
                   playTone('tap');
                   setFilter(f);
                 }}
-                className={`relative isolate border border-line px-4 py-2 text-sm font-semibold transition-colors ${isActive ? 'text-on-accent' : 'hover:border-accent'}`}
+                className="chip relative isolate"
               >
-                {isActive && <motion.span layoutId="skill-filter" className="absolute inset-0 -z-10 bg-accent" />}
+                {isActive && <motion.span layoutId="skill-filter" className="absolute inset-0 -z-10 rounded-full bg-fg" />}
                 {f}
               </button>
             );
@@ -103,9 +107,9 @@ export default function Skills() {
                     {s.name}
                     <span className="label ml-2 hidden text-muted sm:inline">{s.group}</span>
                   </span>
-                  <span className="order-last col-span-3 h-2 overflow-hidden bg-bg md:order-none md:col-span-1">
+                  <span className="order-last col-span-3 h-[3px] overflow-hidden rounded-full bg-line md:order-none md:col-span-1">
                     <motion.span
-                      className="block h-full origin-left bg-accent"
+                      className="block h-full origin-left rounded-full bg-fg transition-colors duration-500 group-hover:bg-accent"
                       initial={{ scaleX: 0 }}
                       animate={{ scaleX: isInView ? s.level / 100 : 0 }}
                       transition={{ duration: 1.2, delay: 0.05 * i, ease: [0.16, 1, 0.3, 1] }}

@@ -4,7 +4,7 @@ import { profile } from '@/lib/data';
 export const OG_SIZE = { width: 1200, height: 630 };
 
 /* Mirrors the "press" theme tokens in globals.css — Satori can't read CSS variables. */
-const INK = { bg: '#f2eee3', surface: '#eae5d7', fg: '#15120e', muted: '#5d5749', line: 'rgba(21,18,14,0.22)', accent: '#2b44e0' };
+const INK = { bg: '#f3f0e8', surface: '#eae5d7', fg: '#15120e', muted: '#5d5749', line: 'rgba(21,18,14,0.22)', accent: '#2638c9' };
 
 interface OgCardProps {
   eyebrow: string;

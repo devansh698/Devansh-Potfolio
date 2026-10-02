@@ -71,10 +71,12 @@ export default function About() {
     () => {
       const mm = gsap.matchMedia();
       mm.add('(prefers-reduced-motion: no-preference)', () => {
-        const split = SplitText.create('[data-statement]', { type: 'words' });
+        // Word splits still read naturally, so skip SplitText's aria-label (not permitted on a <p>).
+        const split = SplitText.create('[data-statement]', { type: 'words', aria: 'none' });
         gsap.fromTo(
           split.words,
-          { opacity: 0.15 },
+          // Dim floor keeps unrevealed words at >=3:1 contrast in every theme; accent ink needs a higher floor.
+          { opacity: (_: number, el: Element) => (el.closest('.text-accent') ? 0.7 : 0.5) },
           { opacity: 1, stagger: 0.05, ease: 'none', scrollTrigger: { trigger: '[data-statement]', start: 'top 80%', end: 'bottom 50%', scrub: true } },
         );
         gsap.fromTo(
@@ -96,11 +98,11 @@ export default function About() {
       <div data-about-grid className="grid gap-12 lg:grid-cols-12">
         <div className="lg:col-span-7">
           <p data-statement className="display text-[clamp(1.7rem,3.4vw,3.2rem)] leading-[1.08]">
-            I’m <span className="text-accent">{profile.name}</span> — a full-stack developer who went from intern to Software Engineer at{' '}
+            I’m <span className="text-accent">{profile.name}</span> — a software engineer focused on Generative AI, who went from intern to Software Engineer at{' '}
             {profile.company} in under a year. {profile.statement}
           </p>
           <div className="mt-10 flex flex-wrap gap-2">
-            {['React', 'Node.js', 'Laravel', 'Flask', 'MongoDB', 'MySQL', 'AWS', 'WebSockets'].map((t) => (
+            {['LLMs', 'Claude API', 'Prompt Engineering', 'Python', 'React', 'Next.js', 'Node.js', 'AWS'].map((t) => (
               <motion.span
                 key={t}
                 whileHover={{ y: -4, rotate: -3 }}

@@ -44,7 +44,7 @@ function shortTitle(title: string): string {
 
 const BINDING_CLASS: Record<Binding, string> = {
   cloth: 'bg-surface-2 text-fg border-line',
-  ink: 'bg-accent text-on-accent border-accent',
+  ink: 'bg-fg text-bg border-fg',
   paper: 'bg-bg text-fg border-line',
 };
 
@@ -83,7 +83,7 @@ function Book({
       className={`relative flex shrink-0 flex-col items-center justify-between border px-2 py-3 shadow-[3px_0_0_rgb(0_0_0/0.08)] ${BINDING_CLASS[binding]}`}
     >
       {/* head band */}
-      <span aria-hidden="true" className={`h-1 w-full ${binding === 'ink' ? 'bg-on-accent/60' : 'bg-accent'}`} />
+      <span aria-hidden="true" className={`h-1 w-full ${binding === 'ink' ? 'bg-accent-2/80' : 'bg-fg/70'}`} />
 
       <span
         className={`display flex-1 overflow-hidden py-3 text-center leading-tight ${type}`}
@@ -136,7 +136,7 @@ function Shelf({
           <span aria-hidden="true" className="ml-3 flex shrink-0 flex-col justify-end gap-1 self-end">
             <span className="h-3 w-24 border border-line bg-bg" />
             <span className="h-3 w-28 border border-line bg-surface-2" />
-            <span className="h-4 w-24 border border-accent bg-accent" />
+            <span className="h-4 w-24 border border-fg bg-fg" />
           </span>
           <span aria-hidden="true" className="ml-auto h-24 w-3 shrink-0 self-end border border-line bg-surface-2" />
         </div>
@@ -177,6 +177,7 @@ export default function Credentials() {
         eyebrow="The shelf"
         title="Credent"
         accent="ials"
+        isAccentJoined
         meta={`${specializations.length + courses.length} volumes`}
         id="certs-title"
         aside={

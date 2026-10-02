@@ -85,7 +85,8 @@ function projectNode(project: Project): JsonLdNode {
     inLanguage: site.language,
     author: { '@id': PERSON_ID },
     creator: { '@id': PERSON_ID },
-    ...(project.repo ? { codeRepository: project.repo, sameAs: project.repo } : {}),
+    ...(project.repo ? { codeRepository: project.repo } : {}),
+    ...(project.live || project.repo ? { sameAs: [project.live, project.repo].filter(Boolean) } : {}),
   };
 }
 

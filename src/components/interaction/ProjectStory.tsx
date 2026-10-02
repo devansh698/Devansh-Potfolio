@@ -178,7 +178,7 @@ function Story({ project }: { project: Project }) {
                 <p className="text-xl leading-relaxed">{project.result}</p>
                 <div className="mt-6 flex flex-wrap gap-2">
                   {project.stack.map((c) => (
-                    <span key={c} className="bg-accent px-3 py-1 text-sm font-semibold text-on-accent">
+                    <span key={c} className="rounded-full border border-fg px-3 py-1 text-sm font-medium">
                       {c}
                     </span>
                   ))}
@@ -187,6 +187,17 @@ function Story({ project }: { project: Project }) {
                   <a href={projectPath(project)} className="label border border-line px-4 py-3 hover:bg-fg hover:text-bg">
                     Full case study →
                   </a>
+                  {project.live && (
+                    <a
+                      href={project.live}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={() => celebrate('discover')}
+                      className="btn btn-solid pr-6"
+                    >
+                      Visit live site ↗
+                    </a>
+                  )}
                   {project.repo ? (
                     <a
                       href={project.repo}
@@ -198,7 +209,7 @@ function Story({ project }: { project: Project }) {
                       View code ↗
                     </a>
                   ) : (
-                    <span className="label text-muted">In development — code drops soon.</span>
+                    !project.live && <span className="label text-muted">In development — code drops soon.</span>
                   )}
                 </div>
               </>
@@ -219,7 +230,7 @@ function Story({ project }: { project: Project }) {
         <button
           type="button"
           onClick={() => (stage === STAGES.length - 1 ? close() : goTo(stage + 1))}
-          className="bg-accent px-5 py-2.5 text-sm font-bold uppercase text-on-accent"
+          className="btn btn-solid h-10 pr-5 text-sm"
         >
           {stage === STAGES.length - 1 ? 'Close' : `Next: ${STAGES[stage + 1]}`} →
         </button>

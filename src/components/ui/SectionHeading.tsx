@@ -9,20 +9,22 @@ interface SectionHeadingProps {
   title: string;
   /** Set in italic serif after the title — the emphasised half of the phrase. */
   accent?: string;
+  /** Set the accent flush against the title, splitting one word (e.g. Credent|ials). */
+  isAccentJoined?: boolean;
   meta?: string;
   id?: string;
   aside?: ReactNode;
 }
 
 /** Section masthead: a numbered rule, then a display line that flips up on scroll. */
-export default function SectionHeading({ index, eyebrow, title, accent, meta, id, aside }: SectionHeadingProps) {
+export default function SectionHeading({ index, eyebrow, title, accent, isAccentJoined = false, meta, id, aside }: SectionHeadingProps) {
   const root = useRef<HTMLDivElement>(null);
 
   useGSAP(
     () => {
       const mm = gsap.matchMedia();
       mm.add('(prefers-reduced-motion: no-preference)', () => {
-        const split = SplitText.create(root.current!.querySelector('h2'), { type: 'chars' });
+        const split = SplitText.create(root.current!.querySelector('h2'), { type: 'words,chars' });
         gsap.fromTo(
           split.chars,
           { rotationX: -100, yPercent: 60, z: -120, opacity: 0, transformOrigin: '50% 100% -30px', transformPerspective: 700 },
@@ -60,7 +62,12 @@ export default function SectionHeading({ index, eyebrow, title, accent, meta, id
       <div className="flex flex-wrap items-end justify-between gap-6">
         <h2 id={id} className="display text-[clamp(2.8rem,9vw,8rem)]">
           {title}
-          {accent && <em className="text-accent"> {accent}</em>}
+          {accent && (
+            <>
+              {isAccentJoined ? null : ' '}
+              <em className="text-accent">{accent}</em>
+            </>
+          )}
         </h2>
         {aside}
       </div>

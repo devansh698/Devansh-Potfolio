@@ -88,14 +88,29 @@ export default function ProjectRing({ projects, onOpen }: ProjectRingProps) {
                   </span>
                 ))}
               </div>
-              <button
-                type="button"
-                data-cursor="Open"
-                onClick={() => onOpen(current)}
-                className="mt-6 bg-accent px-6 py-3 font-semibold text-on-accent transition-transform hover:scale-[1.03]"
-              >
-                Explore case study ↗
-              </button>
+              <div className="mt-6 flex flex-wrap items-center gap-3">
+                <button
+                  type="button"
+                  data-cursor="Open"
+                  onClick={() => onOpen(current)}
+                  className="btn btn-solid"
+                >
+                  Explore case study
+                  <span className="btn-arrow" aria-hidden="true"><span>→</span></span>
+                </button>
+                {current.live && (
+                  <a
+                    href={current.live}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    data-cursor="Visit"
+                    className="btn btn-ghost"
+                  >
+                    <span aria-hidden="true" className="size-1.5 rounded-full bg-[#2bb673]" />
+                    Live site ↗
+                  </a>
+                )}
+              </div>
             </motion.div>
           </AnimatePresence>
         </div>
@@ -103,21 +118,20 @@ export default function ProjectRing({ projects, onOpen }: ProjectRingProps) {
         <div className="relative order-1 h-[52svh] [perspective:1400px] lg:order-2 lg:col-span-8 lg:h-full">
           <div ref={ring} className="absolute left-1/2 top-1/2 [transform-style:preserve-3d]">
             {projects.map((p, i) => (
-              <button
+              <div
                 key={p.id}
-                type="button"
-                onClick={() => onOpen(p)}
-                tabIndex={i === active ? 0 : -1}
-                aria-label={`Open ${p.title} case study`}
-                data-cursor="Open"
                 className="absolute left-0 top-0 aspect-[4/5] w-[min(18rem,62vw)] overflow-hidden border border-line shadow-2xl [backface-visibility:hidden] transition-[filter] duration-500"
                 style={{
                   transform: `translate(-50%, -50%) rotateY(${i * step}deg) translateZ(${radius}rem)`,
                   filter: i === active ? 'none' : 'brightness(0.55) saturate(0.7)',
                 }}
               >
-                <ProjectCover project={p} />
-              </button>
+                <ProjectCover project={p} sizes="18rem" />
+                {/* Overlay button rather than a wrapper: the cover may hold a live iframe, which can't sit inside a button. */}
+                <button type="button" onClick={() => onOpen(p)} tabIndex={i === active ? 0 : -1} data-cursor="Open" className="absolute inset-0">
+                  <span className="sr-only">Open {p.title} case study</span>
+                </button>
+              </div>
             ))}
           </div>
           <p className="label pointer-events-none absolute inset-x-0 bottom-4 text-center text-muted">

@@ -56,15 +56,15 @@ export default function TldrSheet() {
         </div>
         <div>
           <dt className="label text-muted">Fact</dt>
-          <dd className="mt-2 text-lg">Intern → full-time engineer inside a year, shipping production CRMs.</dd>
+          <dd className="mt-2 text-lg">Intern → full-time engineer inside a year. Claude Certified Developer building Generative AI features.</dd>
         </div>
       </dl>
 
       <div className="mt-8 flex flex-wrap gap-2">
-        <a href={`mailto:${profile.email}`} className="bg-accent px-5 py-2.5 font-semibold text-on-accent">
+        <a href={`mailto:${profile.email}`} className="btn btn-solid h-11 pr-5">
           Email me
         </a>
-        <a href={profile.github} target="_blank" rel="noopener noreferrer" className="border border-line px-5 py-2.5 hover:bg-fg hover:text-bg">
+        <a href={profile.github} target="_blank" rel="noopener noreferrer" className="btn btn-ghost h-11">
           GitHub
         </a>
         <a href={profile.linkedin} target="_blank" rel="noopener noreferrer" className="border border-line px-5 py-2.5 hover:bg-fg hover:text-bg">

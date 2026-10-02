@@ -121,11 +121,10 @@ export default function TechSphere({ words }: TechSphereProps) {
               items.current[i] = node;
             }}
             className={`absolute left-0 top-0 whitespace-nowrap px-3 py-1 text-sm font-semibold will-change-transform ${
-              i % 4 === 0 ? 'bg-accent text-on-accent' : 'border border-line bg-surface-2 text-fg'
+              i % 4 === 0 ? 'bg-fg text-bg' : 'border border-line bg-surface-2 text-fg'
             }`}
-          >
-            {w}
-          </span>
+            data-deco-text={w}
+          />
         ))}
       </div>
     </div>

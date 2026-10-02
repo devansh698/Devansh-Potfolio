@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { AnimatePresence, motion, useScroll, useSpring, useTransform } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import { useCompanion } from '@/components/providers/CompanionProvider';
 import { THEMES, THEME_IDS, useTheme } from '@/components/providers/ThemeProvider';
 import { SCRIPT } from '@/lib/interaction/script';
@@ -113,29 +113,6 @@ function Tools({ onAction }: { onAction?: () => void }) {
   );
 }
 
-/** Right-edge ruler: scroll position as a measured scale, like a page gauge. */
-function ScrollRuler() {
-  const { scrollYProgress } = useScroll();
-  const progress = useSpring(scrollYProgress, { stiffness: 200, damping: 30 });
-  const top = useTransform(progress, (v) => `${v * 100}%`);
-  const percent = useTransform(progress, (v) => String(Math.round(v * 100)).padStart(3, '0'));
-
-  return (
-    <div aria-hidden="true" className="pointer-events-none fixed right-4 top-0 z-[55] hidden h-svh flex-col justify-center lg:flex">
-      <div className="relative h-[60svh] w-12">
-        <span className="absolute inset-y-0 right-3 w-px bg-line" />
-        {Array.from({ length: 21 }).map((_, i) => (
-          <span key={i} className="absolute right-3 h-px bg-line" style={{ top: `${i * 5}%`, width: i % 5 === 0 ? '10px' : '5px' }} />
-        ))}
-        <motion.div className="absolute right-0 flex items-center gap-1.5" style={{ top }}>
-          <motion.span className="label !text-[0.6rem] tabular-nums text-accent">{percent}</motion.span>
-          <span className="h-px w-3 bg-accent" />
-        </motion.div>
-      </div>
-    </div>
-  );
-}
-
 export default function Nav() {
   const time = useLocalTime(profile.timeZone);
   const active = useActiveSection();
@@ -159,9 +136,10 @@ export default function Nav() {
       {/* Masthead */}
       <header className="fixed inset-x-0 top-0 z-50 border-b border-line bg-bg/85 backdrop-blur-md">
         <div className="gutter flex items-center justify-between gap-4 py-2.5">
-          <a href="#top" onClick={(e) => (e.preventDefault(), go('#top'))} className="flex items-baseline gap-3" aria-label="Back to top">
+          <a href="#top" onClick={(e) => (e.preventDefault(), go('#top'))} className="flex items-baseline gap-3">
             <span className="display text-xl">{profile.name}</span>
             <span className="label hidden text-muted sm:inline">— {profile.role} · No. 01</span>
+            <span className="sr-only">(back to top)</span>
           </a>
 
           <div className="hidden items-center gap-2 lg:flex">
@@ -200,7 +178,6 @@ export default function Nav() {
         })}
       </nav>
 
-      <ScrollRuler />
 
       <AnimatePresence>
         {isOpen && (

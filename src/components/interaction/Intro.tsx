@@ -227,7 +227,7 @@ function IntroOverlay() {
                 onClick={onEnter}
                 autoFocus
                 data-cursor="Enter"
-                className="display mt-6 bg-accent px-10 py-4 text-lg font-bold uppercase text-on-accent transition-transform hover:scale-105"
+                className="btn btn-solid mt-6 h-14 pl-8 pr-8 text-base"
                 initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.3, ease: EASE }}
@@ -256,10 +256,10 @@ function IntroOverlay() {
                     className="w-full border-b-2 border-line bg-transparent py-3 text-center text-3xl text-fg placeholder:text-muted/60 focus:border-accent focus:outline-none focus-visible:outline-none"
                   />
                   <div className="flex justify-center gap-3">
-                    <button type="submit" className="bg-accent px-6 py-3 font-semibold text-on-accent">
+                    <button type="submit" className="btn btn-solid pr-6">
                       {SCRIPT.intro.nameGo}
                     </button>
-                    <button type="button" onClick={onNameSkip} className="border border-line px-6 py-3">
+                    <button type="button" onClick={onNameSkip} className="btn btn-ghost">
                       {SCRIPT.intro.nameSkip}
                     </button>
                   </div>
@@ -285,7 +285,7 @@ function IntroOverlay() {
                     playTone('open');
                     exit(r.target, SCRIPT.routeFollowUp[r.id]);
                   }}
-                  className="group flex flex-col items-start gap-1 border border-line bg-surface p-4 text-left transition-colors hover:border-accent hover:bg-accent hover:text-on-accent"
+                  className="group flex flex-col items-start gap-1 border border-line bg-surface p-4 text-left transition-colors hover:border-fg hover:bg-fg hover:text-bg"
                   initial={{ opacity: 0, y: 14 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.45, delay: 0.1 + i * 0.08, ease: EASE }}
